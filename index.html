@@ -303,8 +303,11 @@
                         const subtotal = qty * size.price;
                         total += subtotal;
                         
-                        orderSummaryHtml += `<li>${qty}x ${flavor.name} - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
-                        whatsappMessage += `${qty}x ${flavor.name} - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+                        // Extract just the gramasi from the size string
+                        const gramasi = size.size.split(' ')[0];
+                        
+                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
+                        whatsappMessage += `${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
                     }
                 });
             });
