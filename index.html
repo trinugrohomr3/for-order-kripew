@@ -63,6 +63,42 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
+                <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
+                <div class="mt-2 space-y-2">
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
+                        <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                    </div>
+                </div>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
                 <!-- Product grid container -->
                 <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,7 +167,8 @@
         const nameInput = document.getElementById('name');
         const phoneInput = document.getElementById('phone');
         const addressInput = document.getElementById('address');
-        
+        const otherDeliveryInput = document.getElementById('delivery-other-input');
+
         // Render products based on flavors
         function renderProducts() {
             productList.innerHTML = '';
@@ -221,9 +258,18 @@
             const name = nameInput.value;
             const phone = phoneInput.value;
             const address = addressInput.value;
+            const deliveryOption = document.querySelector('input[name="delivery-option"]:checked')?.value;
+            const otherDeliveryText = otherDeliveryInput.value;
+            
+            let finalDeliveryOption = '';
+            if (deliveryOption === 'Other') {
+                finalDeliveryOption = otherDeliveryText;
+            } else if (deliveryOption) {
+                finalDeliveryOption = deliveryOption;
+            }
 
-            if (!name || !phone || !address) {
-                showModal('<p class="text-red-500">Mohon lengkapi semua data diri Anda.</p>');
+            if (!name || !phone || !address || !finalDeliveryOption) {
+                showModal('<p class="text-red-500">Mohon lengkapi semua data diri dan opsi pengiriman.</p>');
                 return;
             }
             
@@ -234,16 +280,17 @@
                 <p><strong>Nama:</strong> ${name}</p>
                 <p><strong>No. Telp:</strong> ${phone}</p>
                 <p><strong>Alamat:</strong> ${address}</p>
+                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
                 <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
                 <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
             `;
 
             let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
-            whatsappMessage += `Nama: ${name}\n`;
-            whatsappMessage += `No. Telp: ${phone}\n`;
-            whatsappMessage += `Alamat: ${address}\n`;
-            whatsappMessage += `Opsi pengiriman: (Mohon diisi manual)\n\n`; // Menambahkan placeholder
-            whatsappMessage += `Detail Pesanan:\n`;
+            whatsappMessage += `*Nama:* ${name}\n`;
+            whatsappMessage += `*No. Telp:* ${phone}\n`;
+            whatsappMessage += `*Alamat:* ${address}\n`;
+            whatsappMessage += `*Opsi Pengiriman:* ${finalDeliveryOption}\n\n`;
+            whatsappMessage += `*Detail Pesanan:*\n`;
 
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
@@ -256,8 +303,8 @@
                         const subtotal = qty * size.price;
                         total += subtotal;
                         
-                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
-                        whatsappMessage += `${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+                        orderSummaryHtml += `<li>${qty}x ${flavor.name} - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
+                        whatsappMessage += `${qty}x ${flavor.name} - Rp ${subtotal.toLocaleString('id-ID')}\n`;
                     }
                 });
             });
@@ -271,10 +318,11 @@
 
             orderSummaryHtml += `
                 <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
+                <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
             `;
             
-            whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
-            whatsappMessage += `Harga yang tertera belum termasuk ongkos kirim\n\n`;
+            whatsappMessage += `\n*Total Harga:* Rp ${total.toLocaleString('id-ID')}\n\n`;
+            whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
             whatsappMessage += `Terima kasih!✨`;
 
 
