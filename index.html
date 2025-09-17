@@ -34,9 +34,14 @@
 
         <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
         <p class="text-center text-sm mb-6 text-gray-500">
-            🎉 Yuk pilih KRIPEW favoritmu! 🥔🍟<br>
-            Tentukan rasa 😋, ukuran 📏, dan jumlah 🧮 — total otomatis 💰<br>
-            Selesaikan data pengiriman 📦 supaya keripik sampai cepat di tangan kamu 🚀
+            Hai, terima kasih sudah mau order KRIPEW.<br>
+            Berikut panduan untuk pengisian form:<br>
+            1. Isi form dan pesananmu secara lengkap<br>
+            2. klik pesan<br>
+            3. Cek kembali rekapan orderanmu<br>
+            4. Klik kirim ke whatsapp admin (otomatis akan ter link)5. Pastikan rekapan pesanannya sesuai dan sudah terkirim ke WA admin ya!<br><br>
+            Note : Harga yang tertera blm termasuk ongkir 🤗<br>
+            Terima kasih🤗 🫶🏻✨
         </p>
         <form id="order-form" class="space-y-6">
             <div>
@@ -87,11 +92,32 @@
 
         // Array of available sizes with their prices
         const sizes = [
-            { size: '75gr', price: 25000 },
-            { size: '115gr', price: 35000 }
+            { size: '80gr (Small)', price: 25000 },
+            { size: '120gr (Large)', price: 35000 }
         ];
 
-        const whatsappNumber = '6285158595400';
+        const whatsappNumber = '6285855550120';
+
+        // GANTI URL INI DENGAN URL GOOGLE FORM ANDA
+        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-P_QjU-JpL-g-QY_c8K6M_2XoEw_8n8bV-t1U/formResponse';
+        
+        // GANTI ID DI BAWAH INI DENGAN ID PERTANYAAN DARI GOOGLE FORM ANDA
+        const formEntries = {
+            name: 'entry.123456789', // ID untuk Nama Lengkap
+            phone: 'entry.987654321', // ID untuk Nomor Telepon
+            address: 'entry.112233445', // ID untuk Alamat Lengkap
+            // Tambahkan ID untuk setiap varian produk di sini
+            saltedEgg75: 'entry.678901234',
+            saltedEgg115: 'entry.543210987',
+            seaweed75: 'entry.987654321',
+            seaweed115: 'entry.123456789',
+            sambalMatah75: 'entry.112233445',
+            sambalMatah115: 'entry.987654321',
+            cheese75: 'entry.123456789',
+            cheese115: 'entry.987654321',
+            baladoDaunJeruk75: 'entry.112233445',
+            baladoDaunJeruk115: 'entry.987654321',
+        };
 
         const productList = document.getElementById('product-list');
         const totalPriceEl = document.getElementById('total-price');
@@ -112,7 +138,8 @@
                 
                 let sizeOptionsHtml = '';
                 sizes.forEach(size => {
-                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(' ', '')}`;
+                    // Correctly handle spaces for unique IDs
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
                     sizeOptionsHtml += `
                         <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
                             <div>
@@ -144,7 +171,8 @@
             let total = 0;
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
-                    const qtyInput = document.getElementById(`qty-${flavorIndex}-${size.size.replace(' ', '')}`);
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
                     if (qtyInput) {
                         const qty = parseInt(qtyInput.value) || 0;
                         total += qty * size.price;
@@ -184,7 +212,7 @@
             }
         });
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const name = nameInput.value;
@@ -195,13 +223,10 @@
                 showModal('<p class="text-red-500">Mohon lengkapi semua data diri Anda.</p>');
                 return;
             }
-
-            let orderDetails = 'Halo, saya ingin memesan KRIPEW.\n\n';
-            orderDetails += `*Nama:* ${name}\n`;
-            orderDetails += `*No. Telp:* ${phone}\n`;
-            orderDetails += `*Alamat:* ${address}\n\n`;
-            orderDetails += `*Detail Pesanan:*\n`;
-
+            
+            let total = 0;
+            let hasOrder = false;
+            
             let orderSummaryHtml = `
                 <p><strong>Nama:</strong> ${name}</p>
                 <p><strong>No. Telp:</strong> ${phone}</p>
@@ -210,20 +235,26 @@
                 <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
             `;
 
-            let total = 0;
-            let hasOrder = false;
+            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
+            whatsappMessage += `Nama: ${name}\n`;
+            whatsappMessage += `No. Telp: ${phone}\n`;
+            whatsappMessage += `Alamat: ${address}\n`;
+            whatsappMessage += `Opsi pengiriman: (Mohon diisi manual)\n\n`; // Menambahkan placeholder
+            whatsappMessage += `Detail Pesanan:\n`;
 
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
-                    const qtyInput = document.getElementById(`qty-${flavorIndex}-${size.size.replace(' ', '')}`);
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
                     const qty = parseInt(qtyInput.value) || 0;
                     
                     if (qty > 0) {
                         hasOrder = true;
                         const subtotal = qty * size.price;
                         total += subtotal;
-                        orderDetails += `${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+                        
                         orderSummaryHtml += `<li>${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
+                        whatsappMessage += `${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
                     }
                 });
             });
@@ -235,17 +266,20 @@
                 return;
             }
 
-            orderDetails += `\n*Total Harga: Rp ${total.toLocaleString('id-ID')}*\n`;
-            orderDetails += '\nTerima kasih!';
+            orderSummaryHtml += `
+                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
+            `;
+            
+            whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
+            whatsappMessage += `Harga yang tertera belum termasuk ongkos kirim\n\n`;
+            whatsappMessage += `Terima kasih!✨`;
 
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
 
             showModal(`
                 <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
                 <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
                 <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
-                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
-                <a href="${whatsappUrl}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
+                <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
                     Kirim Pesanan via WhatsApp
                 </a>
             `);
