@@ -39,21 +39,6 @@
             Selesaikan data pengiriman 📦 supaya keripik sampai cepat di tangan kamu 🚀
         </p>
         <form id="order-form" class="space-y-6">
-            <!-- Hidden fields for Google Form to capture data per item -->
-            <input type="hidden" name="entry.123456789" id="name-entry">
-            <input type="hidden" name="entry.987654321" id="phone-entry">
-            <input type="hidden" name="entry.112233445" id="address-entry">
-            <input type="hidden" name="entry.223344556" id="saltedegg-75gr-entry">
-            <input type="hidden" name="entry.334455667" id="saltedegg-115gr-entry">
-            <input type="hidden" name="entry.445566778" id="seaweed-75gr-entry">
-            <input type="hidden" name="entry.556677889" id="seaweed-115gr-entry">
-            <input type="hidden" name="entry.667788990" id="sambalmatah-75gr-entry">
-            <input type="hidden" name="entry.778899001" id="sambalmatah-115gr-entry">
-            <input type="hidden" name="entry.889900112" id="cheese-75gr-entry">
-            <input type="hidden" name="entry.990011223" id="cheese-115gr-entry">
-            <input type="hidden" name="entry.001122334" id="balado-75gr-entry">
-            <input type="hidden" name="entry.112233445" id="balado-115gr-entry">
-            
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                 <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
@@ -106,29 +91,7 @@
             { size: '115gr', price: 35000 }
         ];
 
-        // PASTE YOUR GOOGLE FORM ACTION URL HERE
-        const googleFormActionUrl = '[URL_GOOGLE_FORM_ANDA]';
-
-        // ======================================================================================
-        // PENTING: GANTI ID DI BAWAH INI DENGAN ID ENTRI DARI GOOGLE FORM ANDA
-        // Cek kembali Langkah 2 untuk cara mendapatkan ID entri ini.
-        // ID di bawah ini hanya contoh.
-        // ======================================================================================
-        const formEntries = {
-            'name': 'entry.123456789',
-            'phone': 'entry.987654321',
-            'address': 'entry.112233445',
-            'Salted Egg 75gr': 'entry.223344556',
-            'Salted Egg 115gr': 'entry.334455667',
-            'Seaweed 75gr': 'entry.445566778',
-            'Seaweed 115gr': 'entry.556677889',
-            'Sambal Matah 75gr': 'entry.667788990',
-            'Sambal Matah 115gr': 'entry.778899001',
-            'Cheese 75gr': 'entry.889900112',
-            'Cheese 115gr': 'entry.990011223',
-            'Balado Daun Jeruk 75gr': 'entry.001122334',
-            'Balado Daun Jeruk 115gr': 'entry.112233445',
-        };
+        const whatsappNumber = '6285158595400';
 
         const productList = document.getElementById('product-list');
         const totalPriceEl = document.getElementById('total-price');
@@ -233,28 +196,25 @@
                 return;
             }
 
+            let orderDetails = 'Halo, saya ingin memesan KRIPEW.\n\n';
+            orderDetails += `*Nama:* ${name}\n`;
+            orderDetails += `*No. Telp:* ${phone}\n`;
+            orderDetails += `*Alamat:* ${address}\n\n`;
+            orderDetails += `*Detail Pesanan:*\n`;
+
+            let total = 0;
             let hasOrder = false;
-            let orderSummary = '';
-            
-            // Populate hidden inputs and build confirmation message
+
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
-                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(' ', '')}`;
-                    const qtyInput = document.getElementById(uniqueId);
+                    const qtyInput = document.getElementById(`qty-${flavorIndex}-${size.size.replace(' ', '')}`);
                     const qty = parseInt(qtyInput.value) || 0;
                     
-                    const entryKey = `${flavor.name} ${size.size}`;
-                    const entryId = formEntries[entryKey];
-                    
-                    if (entryId) {
-                        const hiddenInput = document.querySelector(`input[name="${entryId}"]`);
-                        if (hiddenInput) {
-                            hiddenInput.value = qty;
-                            if (qty > 0) {
-                                hasOrder = true;
-                                orderSummary += `${qty}x ${flavor.name} (${size.size})<br>`;
-                            }
-                        }
+                    if (qty > 0) {
+                        hasOrder = true;
+                        const subtotal = qty * size.price;
+                        total += subtotal;
+                        orderDetails += `${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
                     }
                 });
             });
@@ -263,26 +223,19 @@
                 showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
                 return;
             }
-            
-            // Set the form action URL
-            form.action = googleFormActionUrl;
-            form.method = 'POST';
 
-            // Set the values for the main hidden form fields
-            document.querySelector(`input[name="${formEntries.name}"]`).value = name;
-            document.querySelector(`input[name="${formEntries.phone}"]`).value = phone;
-            document.querySelector(`input[name="${formEntries.address}"]`).value = address;
+            orderDetails += `\n*Total Harga: Rp ${total.toLocaleString('id-ID')}*\n`;
+            orderDetails += '\nTerima kasih!';
 
-            // Display confirmation summary
-            let confirmationDetails = `<p><strong>Nama:</strong> ${name}</p>
-                                        <p><strong>No. Telp:</strong> ${phone}</p>
-                                        <p><strong>Alamat:</strong> ${address}</p>
-                                        <p class="mt-4 font-semibold">Detail Pesanan:</p>
-                                        <ul class="list-disc list-inside">${orderSummary}</ul>`;
-            showModal(confirmationDetails);
-            
-            // Submit the form to Google Forms
-            form.submit();
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
+
+            showModal(`
+                <p>Pesanan Anda sudah siap!</p>
+                <p class="mt-4 text-center">Klik tombol di bawah untuk mengirim pesanan via WhatsApp.</p>
+                <a href="${whatsappUrl}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
+                    Kirim Pesanan via WhatsApp
+                </a>
+            `);
         });
 
         closeModalBtn.addEventListener('click', hideModal);
