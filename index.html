@@ -202,6 +202,14 @@
             orderDetails += `*Alamat:* ${address}\n\n`;
             orderDetails += `*Detail Pesanan:*\n`;
 
+            let orderSummaryHtml = `
+                <p><strong>Nama:</strong> ${name}</p>
+                <p><strong>No. Telp:</strong> ${phone}</p>
+                <p><strong>Alamat:</strong> ${address}</p>
+                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
+                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
+            `;
+
             let total = 0;
             let hasOrder = false;
 
@@ -215,9 +223,12 @@
                         const subtotal = qty * size.price;
                         total += subtotal;
                         orderDetails += `${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${size.size}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
                     }
                 });
             });
+
+            orderSummaryHtml += `</ul>`;
 
             if (!hasOrder) {
                 showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
@@ -230,8 +241,10 @@
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(orderDetails)}`;
 
             showModal(`
-                <p>Pesanan Anda sudah siap!</p>
-                <p class="mt-4 text-center">Klik tombol di bawah untuk mengirim pesanan via WhatsApp.</p>
+                <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
+                <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
+                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
                 <a href="${whatsappUrl}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
                     Kirim Pesanan via WhatsApp
                 </a>
