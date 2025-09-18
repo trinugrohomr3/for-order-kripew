@@ -229,27 +229,35 @@
         </div>
     </div>
 
-    <script type="module">
-        // Import modul Firebase yang diperlukan
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- Firebase CDN scripts (revisi) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
+    <script>
         // Variabel global yang disediakan oleh lingkungan Canvas
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 
         // Inisialisasi Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         let userId = '';
+
         // Autentikasi pengguna secara anonim atau dengan token kustom
-        if (typeof __initial_auth_token !== 'undefined') {
-            signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-            signInAnonymously(auth);
+        async function signIn() {
+            if (typeof __initial_auth_token !== 'undefined') {
+                try {
+                    await auth.signInWithCustomToken(__initial_auth_token);
+                } catch (error) {
+                    console.error("Error signing in with custom token: ", error);
+                    await auth.signInAnonymously();
+                }
+            } else {
+                await auth.signInAnonymously();
+            }
         }
 
         // Dapatkan user ID setelah autentikasi berhasil
@@ -461,14 +469,14 @@
                 deliveryOption: finalDeliveryOption,
                 items: orderedItems,
                 total: total,
-                timestamp: serverTimestamp(),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 userId: userId,
                 status: 'Menunggu'
             };
 
             // Simpan pesanan ke Firestore
             try {
-                await addDoc(collection(db, `/artifacts/${appId}/public/data/orders`), orderData);
+                await db.collection(`/artifacts/${appId}/public/data/orders`).add(orderData);
                 console.log("Order saved to Firestore successfully.");
             } catch (error) {
                 console.error("Error saving order to Firestore: ", error);
@@ -733,7 +741,8 @@
 
         // Setup listener real-time dari Firestore
         function setupRealtimeListener() {
-            onSnapshot(collection(db, `/artifacts/${appId}/public/data/orders`), (snapshot) => {
+            db.collection(`/artifacts/${appId}/public/data/orders`)
+                .onSnapshot((snapshot) => {
                 allOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 applyFiltersAndSearch();
             }, (error) => {
@@ -760,8 +769,8 @@
                 const orderId = e.target.dataset.id;
                 const newStatus = e.target.dataset.status;
                 try {
-                    const orderRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
-                    await updateDoc(orderRef, { status: newStatus });
+                    const orderRef = db.collection(`/artifacts/${appId}/public/data/orders`).doc(orderId);
+                    await orderRef.update({ status: newStatus });
                     console.log(`Status pesanan ${orderId} berhasil diperbarui menjadi ${newStatus}.`);
                 } catch (error) {
                     console.error("Gagal memperbarui status: ", error);
@@ -770,8 +779,8 @@
             if (e.target.classList.contains('delete-order-btn')) {
                 const orderId = e.target.dataset.id;
                 try {
-                    const orderRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
-                    await deleteDoc(orderRef);
+                    const orderRef = db.collection(`/artifacts/${appId}/public/data/orders`).doc(orderId);
+                    await orderRef.delete();
                     console.log(`Pesanan ${orderId} berhasil dihapus.`);
                 } catch (error) {
                     console.error("Gagal menghapus pesanan: ", error);
@@ -802,7 +811,7 @@
                     deliveryOption: extractValue('Opsi Pengiriman:'),
                     items: [],
                     total: 0,
-                    timestamp: serverTimestamp(),
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     is_admin_input: true,
                     status: 'Menunggu'
                 };
@@ -849,7 +858,7 @@
                      return;
                 }
 
-                await addDoc(collection(db, `/artifacts/${appId}/public/data/orders`), orderData);
+                await db.collection(`/artifacts/${appId}/public/data/orders`).add(orderData);
                 showModal('<p class="text-green-500">Pesanan berhasil ditambahkan!</p>');
                 adminQuickInput.value = '';
             } catch (error) {
@@ -860,9 +869,14 @@
 
 
         // Panggil fungsi-fungsi awal saat halaman dimuat
-        renderProducts();
-        calculateTotal();
-        populateFilters();
+        function initializeApp() {
+            renderProducts();
+            calculateTotal();
+            populateFilters();
+            signIn();
+        }
+        
+        window.onload = initializeApp;
     </script>
 </body>
 </html>
