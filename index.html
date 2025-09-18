@@ -9,18 +9,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Mengatur font dan background untuk seluruh halaman */
         body {
             font-family: 'Outfit', sans-serif;
             background-color: #fce7b1;
             background-image: linear-gradient(to bottom, #fde9c5, #fef4e5);
             padding-bottom: 9rem;
         }
+        .admin-ribbon {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.65rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
-    <!-- Container utama untuk seluruh aplikasi -->
     <div id="app" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-4xl mx-auto my-8">
         
         <!-- Tombol Admin Login di bagian paling atas -->
@@ -35,7 +45,7 @@
             <img src="https://github.com/trinugrohomr3/for-order-kripew/blob/main/poster.png?raw=true" alt="Gambar Produk KRIPEW" class="w-full h-auto object-cover">
         </div>
 
-        <!-- Modal untuk konfirmasi pesanan atau pesan error -->
+        <!-- Modal Konfirmasi -->
         <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
             <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
                 <div class="mt-3 text-center">
@@ -47,8 +57,21 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Modal Pesan Custom -->
+        <div id="custom-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
+                <div class="mt-3 text-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="custom-modal-title"></h3>
+                    <div id="custom-modal-message" class="mt-2 px-7 py-3 text-sm text-gray-500 text-left"></div>
+                    <div class="items-center px-4 py-3">
+                        <button id="custom-modal-close-btn" class="px-4 py-2 bg-gray-200 text-gray-700 text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Tampilan utama form pemesanan -->
+        <!-- Main Order Form View -->
         <div id="main-view">
             <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
             <div class="text-center text-sm mb-6 text-gray-500">
@@ -65,21 +88,21 @@
                 <p>Terima kasih🤗 🫶🏻✨</p>
             </div>
             <form id="order-form" class="space-y-6">
-                <!-- Form input untuk data diri pelanggan -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
                 </div>
+
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
                     <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
                 </div>
+
                 <div>
                     <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
                     <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
                 </div>
 
-                <!-- Opsi pengiriman -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
                     <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
@@ -116,9 +139,9 @@
                     </div>
                 </div>
 
-                <!-- Pilihan produk -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
+                    <!-- Product grid container -->
                     <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
                     </div>
@@ -126,7 +149,7 @@
             </form>
         </div>
 
-        <!-- Tampilan login admin -->
+        <!-- Admin Login View -->
         <div id="admin-login-view" class="hidden">
             <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">Login Admin</h2>
             <div class="space-y-4">
@@ -141,7 +164,7 @@
             </div>
         </div>
         
-        <!-- Tampilan dashboard admin -->
+        <!-- Admin Dashboard Section -->
         <div id="admin-dashboard" class="hidden">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-orange-600">Dashboard Admin</h2>
@@ -152,18 +175,25 @@
             <div class="space-y-4 mb-8">
                 <h3 class="text-lg font-bold text-gray-800">Ringkasan Pesanan (Total Semua)</h3>
                 <div id="summary-dashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Total Pendapatan -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pendapatan</p>
                         <p id="total-revenue" class="text-xl font-bold text-orange-600 mt-1">Rp 0</p>
                     </div>
+
+                    <!-- Total Pesanan -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pesanan</p>
                         <p id="total-orders" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
+
+                    <!-- Total Produk Terjual -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Produk Terjual</p>
                         <p id="total-products-sold" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
+                    
+                    <!-- Total Pembeli -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pembeli (Unik)</p>
                         <p id="total-buyers" class="text-xl font-bold text-orange-600 mt-1">0</p>
@@ -174,7 +204,7 @@
             <!-- Ringkasan Produksi (Pending) -->
             <div class="space-y-4 mb-8">
                 <h3 class="text-lg font-bold text-gray-800">Ringkasan Produksi (Belum Selesai)</h3>
-                 <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                   <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                     <p class="text-sm text-gray-500 mb-2">Total yang harus diproduksi:</p>
                     <p id="production-total" class="text-xl font-bold text-orange-600 mb-4">0</p>
                     <h4 class="font-semibold text-gray-800 mb-2">Total per varian:</h4>
@@ -207,7 +237,7 @@
                 </div>
             </div>
 
-            <!-- Bagian untuk input cepat admin dari teks WhatsApp -->
+            <!-- Admin Quick Input Section -->
             <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">Input Cepat Admin</h3>
                 <p class="text-sm text-gray-500 mb-4">Tempelkan template pesanan dari WhatsApp di sini. Data akan diubah otomatis.</p>
@@ -219,7 +249,7 @@
         </div>
     </div>
     
-    <!-- Footer dengan total harga dan tombol pesan -->
+    <!-- Sticky footer with total price and order button -->
     <div id="sticky-footer" class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
         <div class="flex items-center justify-between">
             <p class="text-lg font-semibold text-orange-600">Total Harga: <span id="total-price" class="font-bold">Rp 0</span></p>
@@ -229,693 +259,688 @@
         </div>
     </div>
 
-    <!-- Firebase CDN scripts -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, setDoc, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <script>
-        window.onload = function() {
-            console.log("Halaman dimuat. Memulai inisialisasi aplikasi.");
+        // =================================================================================
+        // PENTING: Untuk menjalankan di GitHub, ganti nilai di bawah dengan konfigurasi Firebase Anda.
+        // Anda bisa mendapatkan ini di Konsol Firebase Anda (Project settings -> Your apps).
+        // Jangan hapus bagian '__app_id' dan '__initial_auth_token' karena diperlukan untuk preview di Gemini.
+        // =================================================================================
+        const firebaseConfig = {
+  apiKey: "AIzaSyAj475LLg397L_JyaHzUX6RNwSOryQJ5y0",
+  authDomain: "kripew-8fb9e.firebaseapp.com",
+  projectId: "kripew-8fb9e",
+  storageBucket: "kripew-8fb9e.firebasestorage.app",
+  messagingSenderId: "845882338290",
+  appId: "1:845882338290:web:4d026f7fcecefb8bb6d96b",
+  measurementId: "G-RRL9Y4NHL3"
+};
+        const adminPassword = 'admin123'; // Ganti dengan kata sandi yang lebih aman
 
-            // Data produk
-            const flavors = [
-                { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
-                { name: 'Seaweed', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Seaweed' },
-                { name: 'Sambal Matah', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Sambal+Matah' },
-                { name: 'Cheese', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Cheese' },
-                { name: 'Balado Daun Jeruk', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Balado+Daun+Jeruk' }
-            ];
-    
-            const sizes = [
-                { size: '80gr (Small)', price: 25000 },
-                { size: '120gr (Large)', price: 35000 }
-            ];
-    
-            const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
-            const whatsappNumber = '6285855550120';
-            
-            // Elemen DOM yang dibutuhkan
-            const productList = document.getElementById('product-list');
-            const totalPriceEl = document.getElementById('total-price');
-            const form = document.getElementById('order-form');
-            const modal = document.getElementById('confirmation-modal');
-            const confirmationMessage = document.getElementById('confirmation-message');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-            const nameInput = document.getElementById('name');
-            const phoneInput = document.getElementById('phone');
-            const addressInput = document.getElementById('address');
-            const otherDeliveryInput = document.getElementById('delivery-other-input');
-            const mainView = document.getElementById('main-view');
-            const adminLoginView = document.getElementById('admin-login-view');
-            const adminDashboard = document.getElementById('admin-dashboard');
-            const toggleViewBtn = document.getElementById('toggle-view-btn');
-            const loginBtn = document.getElementById('login-btn');
-            const closeDashboardBtn = document.getElementById('close-dashboard-btn');
-            const adminPasswordInput = document.getElementById('admin-password');
-            const loginErrorMessage = document.getElementById('login-error-message');
-            const ordersList = document.getElementById('orders-list');
-            const posterContainer = document.getElementById('poster-container');
-            const stickyFooter = document.getElementById('sticky-footer');
-            const adminLoginLinkContainer = document.getElementById('admin-login-link-container');
-            const totalRevenueEl = document.getElementById('total-revenue');
-            const totalOrdersEl = document.getElementById('total-orders');
-            const totalProductsSoldEl = document.getElementById('total-products-sold');
-            const totalBuyersEl = document.getElementById('total-buyers');
-            const productionTotalEl = document.getElementById('production-total');
-            const productionVariantGridEl = document.getElementById('production-variant-grid');
-            const searchInput = document.getElementById('search-input');
-            const flavorFilter = document.getElementById('flavor-filter');
-            const sizeFilter = document.getElementById('size-filter');
-            const deliveryFilter = document.getElementById('delivery-filter');
-            const resetFilterBtn = document.getElementById('reset-filter-btn');
-            const adminQuickInput = document.getElementById('admin-quick-input');
-            const processAdminInputBtn = document.getElementById('process-admin-input-btn');
-            
-            // Global variable untuk menyimpan data pesanan dari Firestore
-            let allOrders = [];
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : yourFirebaseConfig;
 
-            // Fungsi untuk me-render produk di halaman utama
-            function renderProducts() {
-                console.log("Rendering produk...");
-                productList.innerHTML = '';
-                flavors.forEach((flavor, flavorIndex) => {
-                    const flavorDiv = document.createElement('div');
-                    flavorDiv.className = 'bg-white p-4 rounded-xl shadow-md border border-gray-100 transition-transform duration-300 hover:scale-105';
-                    
-                    let sizeOptionsHtml = '';
-                    sizes.forEach(size => {
-                        const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
-                        sizeOptionsHtml += `
-                            <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
-                                <div>
-                                    <h4 class="text-xs font-semibold text-orange-500">${size.size}</h4>
-                                    <h4 class="text-xs text-gray-500">Rp ${size.price.toLocaleString('id-ID')}</h4>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <button type="button" class="bg-gray-200 text-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold decrement-btn" data-target="${uniqueId}">-</button>
-                                    <input type="number" id="${uniqueId}" name="${uniqueId}" min="0" value="0" readonly class="w-8 px-0 py-1 text-center border-0 bg-transparent text-sm qty-input">
-                                    <button type="button" class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold increment-btn" data-target="${uniqueId}">+</button>
-                                </div>
-                            </div>
-                        `;
-                    });
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-                    flavorDiv.innerHTML = `
-                        <div class="flex justify-center mb-4">
-                            <img src="${flavor.imageUrl}" alt="Gambar KRIPEW ${flavor.name}" class="w-full h-48 object-cover rounded-lg shadow-lg">
-                        </div>
-                        <h3 class="text-lg font-bold text-center text-orange-600 mb-2">${flavor.name}</h3>
-                        <div>${sizeOptionsHtml}</div>
-                    `;
-                    productList.appendChild(flavorDiv);
-                });
+        let userId = '';
+        let isAuthenticated = false;
+
+        // Set up custom modal functions
+        const customModal = document.getElementById('custom-modal');
+        const customModalTitle = document.getElementById('custom-modal-title');
+        const customModalMessage = document.getElementById('custom-modal-message');
+        const customModalCloseBtn = document.getElementById('custom-modal-close-btn');
+
+        function showCustomModal(title, message) {
+            customModalTitle.textContent = title;
+            customModalMessage.innerHTML = message;
+            customModal.classList.remove('hidden');
+        }
+
+        customModalCloseBtn.addEventListener('click', () => {
+            customModal.classList.add('hidden');
+        });
+
+        // Autentikasi dan set up listener
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userId = user.uid;
+                isAuthenticated = true;
+                setupRealtimeListener();
+            } else {
+                console.log("Authentication failed. User ID is not available.");
+                isAuthenticated = false;
+                signInAnonymously(auth);
             }
+        });
+        
+        if (typeof __initial_auth_token !== 'undefined') {
+            await signInWithCustomToken(auth, __initial_auth_token).catch(e => console.error("Custom token sign-in failed:", e));
+        }
 
-            // Fungsi untuk menghitung total harga
-            function calculateTotal() {
-                let total = 0;
-                flavors.forEach((flavor, flavorIndex) => {
-                    sizes.forEach(size => {
-                        const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
-                        const qtyInput = document.getElementById(uniqueId);
-                        if (qtyInput) {
-                            const qty = parseInt(qtyInput.value) || 0;
-                            total += qty * size.price;
-                        }
-                    });
-                });
-                totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
-            }
 
-            // Fungsi untuk menampilkan modal
-            function showModal(message) {
-                confirmationMessage.innerHTML = message;
-                modal.classList.remove('hidden');
-            }
+        // Array of available flavors with their respective images
+        const flavors = [
+            { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
+            { name: 'Seaweed', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Seaweed' },
+            { name: 'Sambal Matah', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Sambal+Matah' },
+            { name: 'Cheese', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Cheese' },
+            { name: 'Balado Daun Jeruk', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Balado+Daun+Jeruk' }
+        ];
 
-            // Fungsi untuk menyembunyikan modal
-            function hideModal() {
-                modal.classList.add('hidden');
-            }
+        // Array of available sizes with their prices
+        const sizes = [
+            { size: '80gr (Small)', price: 25000 },
+            { size: '120gr (Large)', price: 35000 }
+        ];
 
-            // Event listener untuk tombol kuantitas produk
-            productList.addEventListener('click', (e) => {
-                const target = e.target;
-                let qtyInput;
-                if (target.classList.contains('increment-btn')) {
-                    qtyInput = document.getElementById(target.dataset.target);
-                    qtyInput.value = parseInt(qtyInput.value) + 1;
-                    calculateTotal();
-                } else if (target.classList.contains('decrement-btn')) {
-                    qtyInput = document.getElementById(target.dataset.target);
-                    const currentQty = parseInt(qtyInput.value);
-                    if (currentQty > 0) {
-                        qtyInput.value = currentQty - 1;
-                        calculateTotal();
-                    }
-                }
-            });
+        // Array of delivery options for the filter dropdown
+        const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
 
-            // Event listener untuk pengiriman form
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+        const whatsappNumber = '6285855550120';
+        
+        const productList = document.getElementById('product-list');
+        const totalPriceEl = document.getElementById('total-price');
+        const form = document.getElementById('order-form');
+        const modal = document.getElementById('confirmation-modal');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const addressInput = document.getElementById('address');
+        const otherDeliveryInput = document.getElementById('delivery-other-input');
+
+        const mainView = document.getElementById('main-view');
+        const adminLoginView = document.getElementById('admin-login-view');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        
+        const toggleViewBtn = document.getElementById('toggle-view-btn');
+        const loginBtn = document.getElementById('login-btn');
+        const closeDashboardBtn = document.getElementById('close-dashboard-btn');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const loginErrorMessage = document.getElementById('login-error-message');
+        const ordersList = document.getElementById('orders-list');
+        const posterContainer = document.getElementById('poster-container');
+        const stickyFooter = document.getElementById('sticky-footer');
+        const adminLoginLinkContainer = document.getElementById('admin-login-link-container');
+
+        // Dashboard elements
+        const totalRevenueEl = document.getElementById('total-revenue');
+        const totalOrdersEl = document.getElementById('total-orders');
+        const totalProductsSoldEl = document.getElementById('total-products-sold');
+        const totalBuyersEl = document.getElementById('total-buyers');
+        const productionTotalEl = document.getElementById('production-total');
+        const productionVariantGridEl = document.getElementById('production-variant-grid');
+        const searchInput = document.getElementById('search-input');
+        const flavorFilter = document.getElementById('flavor-filter');
+        const sizeFilter = document.getElementById('size-filter');
+        const deliveryFilter = document.getElementById('delivery-filter');
+        const resetFilterBtn = document.getElementById('reset-filter-btn');
+
+        // New admin quick input elements
+        const adminQuickInput = document.getElementById('admin-quick-input');
+        const processAdminInputBtn = document.getElementById('process-admin-input-btn');
+        
+        let allOrders = [];
+
+        function renderProducts() {
+            productList.innerHTML = '';
+            flavors.forEach((flavor, flavorIndex) => {
+                const flavorDiv = document.createElement('div');
+                flavorDiv.className = 'bg-white p-4 rounded-xl shadow-md border border-gray-100 transition-transform duration-300 hover:scale-105';
                 
-                const name = nameInput.value;
-                const phone = phoneInput.value;
-                const address = addressInput.value;
-                const deliveryOption = document.querySelector('input[name="delivery-option"]:checked')?.value;
-                const otherDeliveryText = otherDeliveryInput.value;
-                
-                let finalDeliveryOption = '';
-                if (deliveryOption === 'Other') {
-                    finalDeliveryOption = otherDeliveryText;
-                } else if (deliveryOption) {
-                    finalDeliveryOption = deliveryOption;
-                }
-
-                if (!name || !phone || !address || !finalDeliveryOption) {
-                    showModal('<p class="text-red-500">Mohon lengkapi semua data diri dan opsi pengiriman.</p>');
-                    return;
-                }
-                
-                let total = 0;
-                let hasOrder = false;
-                let orderedItems = [];
-                
-                flavors.forEach((flavor, flavorIndex) => {
-                    sizes.forEach(size => {
-                        const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
-                        const qtyInput = document.getElementById(uniqueId);
-                        const qty = parseInt(qtyInput.value) || 0;
-                        
-                        if (qty > 0) {
-                            hasOrder = true;
-                            const subtotal = qty * size.price;
-                            total += subtotal;
-                            const gramasi = size.size.split(' ')[0];
-                            orderedItems.push({
-                                name: flavor.name,
-                                size: size.size,
-                                quantity: qty,
-                                price: size.price,
-                                subtotal: subtotal
-                            });
-                        }
-                    });
-                });
-
-                if (!hasOrder) {
-                    showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
-                    return;
-                }
-
-                // Buat ringkasan pesanan untuk modal konfirmasi
-                let orderSummaryHtml = `
-                    <p><strong>Nama:</strong> ${name}</p>
-                    <p><strong>No. Telp:</strong> ${phone}</p>
-                    <p><strong>Alamat:</strong> ${address}</p>
-                    <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
-                    <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
-                    <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
-                `;
-                orderedItems.forEach(item => {
-                    const gramasi = item.size.split(' ')[0];
-                    orderSummaryHtml += `<li>${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}</li>`;
-                });
-                orderSummaryHtml += `</ul>`;
-                orderSummaryHtml += `<p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>`;
-                orderSummaryHtml += `<p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>`;
-                
-                // Buat pesan WhatsApp
-                let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
-                whatsappMessage += `Nama: ${name}\n`;
-                whatsappMessage += `No. Telp: ${phone}\n`;
-                whatsappMessage += `Alamat: ${address}\n`;
-                whatsappMessage += `Opsi Pengiriman: ${finalDeliveryOption}\n\n`;
-                whatsappMessage += `Detail Pesanan:\n`;
-                orderedItems.forEach(item => {
-                    const gramasi = item.size.split(' ')[0];
-                    whatsappMessage += `${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}\n`;
-                });
-                whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
-                whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
-                whatsappMessage += `Terima kasih!✨`;
-    
-                showModal(`
-                    <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
-                    <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
-                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
-                    <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
-                        Kirim Pesanan via WhatsApp
-                    </a>
-                `);
-
-                // Logika simpan ke Firestore (akan dieksekusi jika koneksi berhasil)
-                if (typeof db !== 'undefined') {
-                    const orderData = {
-                        name: name,
-                        phone: phone,
-                        address: address,
-                        deliveryOption: finalDeliveryOption,
-                        items: orderedItems,
-                        total: total,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                        userId: userId,
-                        status: 'Menunggu'
-                    };
-                    try {
-                        db.collection(`/artifacts/${appId}/public/data/orders`).add(orderData);
-                        console.log("Order saved to Firestore successfully.");
-                    } catch (error) {
-                        console.error("Error saving order to Firestore: ", error);
-                    }
-                } else {
-                    console.error("Firestore is not initialized. Order will not be saved.");
-                }
-            });
-
-            closeModalBtn.addEventListener('click', hideModal);
-
-            // --- Logika Pergantian Tampilan ---
-            const adminPassword = 'admin123';
-
-            // Alihkan ke tampilan login admin
-            toggleViewBtn.addEventListener('click', () => {
-                mainView.classList.add('hidden');
-                posterContainer.classList.add('hidden');
-                stickyFooter.classList.add('hidden');
-                adminLoginView.classList.remove('hidden');
-                adminPasswordInput.value = '';
-                loginErrorMessage.classList.add('hidden');
-            });
-
-            // Tangani login admin
-            loginBtn.addEventListener('click', () => {
-                if (adminPasswordInput.value === adminPassword) {
-                    adminLoginView.classList.add('hidden');
-                    adminDashboard.classList.remove('hidden');
-                    loginErrorMessage.classList.add('hidden');
-                    adminLoginLinkContainer.classList.add('hidden');
-                    if (typeof setupRealtimeListener !== 'undefined') {
-                        setupRealtimeListener();
-                    }
-                } else {
-                    loginErrorMessage.classList.remove('hidden');
-                }
-            });
-
-            // Tutup dashboard admin
-            closeDashboardBtn.addEventListener('click', () => {
-                adminDashboard.classList.add('hidden');
-                mainView.classList.remove('hidden');
-                posterContainer.classList.remove('hidden');
-                stickyFooter.classList.remove('hidden');
-                adminLoginLinkContainer.classList.remove('hidden');
-            });
-
-            // Fungsi untuk menerapkan filter dan pencarian
-            function applyFiltersAndSearch() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const selectedFlavor = flavorFilter.value;
-                const selectedSize = sizeFilter.value;
-                const selectedDelivery = deliveryFilter.value;
-
-                const filteredOrders = allOrders.filter(order => {
-                    const matchesSearch = searchTerm === '' ||
-                        order.name.toLowerCase().includes(searchTerm) ||
-                        order.phone.includes(searchTerm) ||
-                        order.address.toLowerCase().includes(searchTerm) ||
-                        order.items.some(item =>
-                            item.name.toLowerCase().includes(searchTerm) ||
-                            item.size.toLowerCase().includes(searchTerm)
-                        );
-                    
-                    const matchesFlavor = selectedFlavor === '' ||
-                        order.items.some(item => item.name === selectedFlavor);
-
-                    const matchesSize = selectedSize === '' ||
-                        order.items.some(item => item.size === selectedSize);
-                        
-                    const matchesDelivery = selectedDelivery === '' ||
-                        order.deliveryOption === selectedDelivery;
-
-                    return matchesSearch && matchesFlavor && matchesSize && matchesDelivery;
-                });
-
-                renderDashboard(filteredOrders);
-            }
-            
-            // Render pesanan di dashboard admin
-            function renderDashboard(ordersToRender) {
-                let totalRevenue = 0;
-                let totalProductsSold = 0;
-                let uniqueBuyers = new Set();
-                let productionTotal = 0;
-                let productionVariantTotals = {};
-
-                ordersList.innerHTML = '';
-
-                // Hitung ringkasan dari SEMUA pesanan
-                allOrders.forEach((order) => {
-                    totalRevenue += order.total;
-                    uniqueBuyers.add(order.phone);
-                    order.items.forEach(item => {
-                        totalProductsSold += item.quantity;
-                    });
-                });
-                
-                // Hitung ringkasan produksi dari pesanan yang BELUM SELESAI
-                const pendingOrders = allOrders.filter(order => order.status !== 'Selesai');
-                pendingOrders.forEach((order) => {
-                     order.items.forEach(item => {
-                        productionTotal += item.quantity;
-                        const key = `${item.name} (${item.size})`;
-                        productionVariantTotals[key] = (productionVariantTotals[key] || 0) + item.quantity;
-                    });
-                });
-
-                // Render setiap pesanan
-                ordersToRender.forEach((order) => {
-                    const orderDate = order.timestamp ? new Date(order.timestamp.seconds * 1000).toLocaleString('id-ID') : 'N/A';
-                    
-                    let itemsHtml = order.items.map(item => {
-                        return `
-                            <div class="text-sm">
-                                <span class="font-medium">${item.name} (${item.size}):</span> ${item.quantity} pcs
-                                <span class="text-xs text-gray-500">- Rp ${item.subtotal.toLocaleString('id-ID')}</span>
-                            </div>
-                        `;
-                    }).join('');
-
-                    const orderCard = document.createElement('div');
-                    orderCard.className = 'bg-white p-4 rounded-xl shadow-md border border-gray-200 relative';
-                    
-                    let statusBadgeClass = '';
-                    if (order.status === 'Selesai') {
-                        statusBadgeClass = 'bg-green-100 text-green-700';
-                    } else if (order.status === 'Diproses') {
-                        statusBadgeClass = 'bg-yellow-100 text-yellow-700';
-                    } else {
-                        statusBadgeClass = 'bg-gray-100 text-gray-700';
-                    }
-
-                    let statusButtonHtml = '';
-                    if (order.status === 'Menunggu') {
-                        statusButtonHtml = `<button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">Diproses</button>`;
-                    } else if (order.status === 'Diproses') {
-                         statusButtonHtml = `<button class="update-status-btn bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-green-600 transition-colors" data-id="${order.id}" data-status="Selesai">Siap</button>`;
-                    } else if (order.status === 'Selesai') {
-                         statusButtonHtml = `<button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">Diproses</button>`;
-                    }
-                    
-                    let ribbonHtml = '';
-                    if (order.is_admin_input) {
-                        ribbonHtml = '<span class="text-xs font-semibold text-gray-400 ml-2">Input Admin</span>';
-                    }
-                    
-                    const displayedTotal = order.total.toLocaleString('id-ID');
-
-                    orderCard.innerHTML = `
-                        <div class="flex justify-between items-start mb-2">
+                let sizeOptionsHtml = '';
+                sizes.forEach(size => {
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    sizeOptionsHtml += `
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
                             <div>
-                                <h4 class="font-bold text-gray-800">${order.name}</h4>
-                                <p class="text-xs text-gray-500">ID Pesanan: ${order.id}</p>
+                                <h4 class="text-xs font-semibold text-orange-500">${size.size}</h4>
+                                <h4 class="text-xs text-gray-500">Rp ${size.price.toLocaleString('id-ID')}</h4>
                             </div>
-                            <div class="text-xs text-gray-400 text-right">
-                               <span>${orderDate}</span>
-                               ${ribbonHtml}
-                            </div>
-                        </div>
-                        <div class="space-y-1 text-sm text-gray-600 mb-2">
-                            <p>📞 ${order.phone}</p>
-                            <p>🏠 ${order.address}</p>
-                            <p>🚚 ${order.deliveryOption}</p>
-                        </div>
-                        <div class="mt-3">
-                            ${itemsHtml}
-                        </div>
-                        <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
-                            <p class="font-bold text-orange-600">Total: Rp ${displayedTotal}</p>
                             <div class="flex items-center space-x-2">
-                                <span class="text-sm px-2 py-1 rounded-full font-semibold ${statusBadgeClass}">
-                                    Status: ${order.status}
-                                </span>
-                                ${statusButtonHtml}
-                                <button class="delete-order-btn bg-red-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-red-600 transition-colors" data-id="${order.id}">
-                                    Hapus
-                                </button>
+                                <button type="button" class="bg-gray-200 text-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold decrement-btn" data-target="${uniqueId}">-</button>
+                                <input type="number" id="${uniqueId}" name="${uniqueId}" min="0" value="0" readonly class="w-8 px-0 py-1 text-center border-0 bg-transparent text-sm qty-input">
+                                <button type="button" class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold increment-btn" data-target="${uniqueId}">+</button>
                             </div>
                         </div>
                     `;
-                    ordersList.appendChild(orderCard);
                 });
 
-                // Perbarui data ringkasan di dashboard
-                totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
-                totalProductsSoldEl.textContent = totalProductsSold.toLocaleString('id-ID');
-                totalBuyersEl.textContent = uniqueBuyers.size;
-                totalOrdersEl.textContent = allOrders.length;
+                flavorDiv.innerHTML = `
+                    <div class="flex justify-center mb-4">
+                        <img src="${flavor.imageUrl}" alt="Gambar KRIPEW ${flavor.name}" class="w-full h-48 object-cover rounded-lg shadow-lg">
+                    </div>
+                    <h3 class="text-lg font-bold text-center text-orange-600 mb-2">${flavor.name}</h3>
+                    <div>${sizeOptionsHtml}</div>
+                `;
+                productList.appendChild(flavorDiv);
+            });
+        }
 
-                productionTotalEl.textContent = productionTotal.toLocaleString('id-ID');
-                productionVariantGridEl.innerHTML = '';
-                for (const variant in productionVariantTotals) {
-                    const variantCard = document.createElement('div');
-                    variantCard.className = 'bg-yellow-200 p-3 rounded-lg text-sm font-medium flex justify-between items-center';
-                    variantCard.innerHTML = `
-                        <span>${variant}</span>
-                        <span class="font-bold text-yellow-800">${productionVariantTotals[variant]} pcs</span>
-                    `;
-                    productionVariantGridEl.appendChild(variantCard);
+        function calculateTotal() {
+            let total = 0;
+            flavors.forEach((flavor, flavorIndex) => {
+                sizes.forEach(size => {
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
+                    if (qtyInput) {
+                        const qty = parseInt(qtyInput.value) || 0;
+                        total += qty * size.price;
+                    }
+                });
+            });
+            totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function showModal(message) {
+            confirmationMessage.innerHTML = message;
+            modal.classList.remove('hidden');
+        }
+
+        function hideModal() {
+            modal.classList.add('hidden');
+        }
+
+        productList.addEventListener('click', (e) => {
+            const target = e.target;
+            let qtyInput;
+
+            if (target.classList.contains('increment-btn')) {
+                qtyInput = document.getElementById(target.dataset.target);
+                qtyInput.value = parseInt(qtyInput.value) + 1;
+                calculateTotal();
+            } else if (target.classList.contains('decrement-btn')) {
+                qtyInput = document.getElementById(target.dataset.target);
+                const currentQty = parseInt(qtyInput.value);
+                if (currentQty > 0) {
+                    qtyInput.value = currentQty - 1;
+                    calculateTotal();
                 }
             }
+        });
 
-            // Atur event listeners untuk filter dan pencarian
-            searchInput.addEventListener('input', applyFiltersAndSearch);
-            flavorFilter.addEventListener('change', applyFiltersAndSearch);
-            sizeFilter.addEventListener('change', applyFiltersAndSearch);
-            deliveryFilter.addEventListener('change', applyFiltersAndSearch);
-            resetFilterBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                flavorFilter.value = '';
-                sizeFilter.value = '';
-                deliveryFilter.value = '';
-                applyFiltersAndSearch();
-            });
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            const address = addressInput.value;
+            const deliveryOption = document.querySelector('input[name="delivery-option"]:checked')?.value;
+            const otherDeliveryText = otherDeliveryInput.value;
+            
+            let finalDeliveryOption = '';
+            if (deliveryOption === 'Other') {
+                finalDeliveryOption = otherDeliveryText;
+            } else if (deliveryOption) {
+                finalDeliveryOption = deliveryOption;
+            }
 
-            // Event handler untuk input cepat admin
-            processAdminInputBtn.addEventListener('click', async () => {
-                const text = adminQuickInput.value;
-                if (!text.trim()) {
-                    showModal('<p class="text-red-500">Kolom input teks tidak boleh kosong.</p>');
-                    return;
-                }
-                
-                // Panggil logika simpan jika Firebase sudah terinisialisasi
-                if (typeof db !== 'undefined') {
-                    try {
-                        const lines = text.split('\n').map(line => line.trim());
-                        
-                        const extractValue = (key) => {
-                            const line = lines.find(l => l.toLowerCase().startsWith(key.toLowerCase()));
-                            return line ? line.split(':').slice(1).join(':').trim() : 'N/A';
-                        };
-        
-                        const orderData = {
-                            name: extractValue('Nama:'),
-                            phone: extractValue('No. Telp:'),
-                            address: extractValue('Alamat:'),
-                            deliveryOption: extractValue('Opsi Pengiriman:'),
-                            items: [],
-                            total: 0,
-                            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                            is_admin_input: true,
-                            status: 'Menunggu'
-                        };
-                        
-                        let itemsSection = false;
-                        lines.forEach(line => {
-                            if (line.trim().toLowerCase() === 'detail pesanan:') {
-                                itemsSection = true;
-                                return;
-                            }
-                            if (line.trim().toLowerCase().startsWith('total harga:')) {
-                                itemsSection = false;
-                                return;
-                            }
-                            if (itemsSection && line.trim().length > 0) {
-                                const match = line.match(/^(\d+)x\s(.+?)\s\((.+?)\)\s-\sRp\s([\d.,]+)$/);
-                                if (match) {
-                                    const quantity = parseInt(match[1], 10);
-                                    const productName = match[2].trim();
-                                    const productSize = match[3].trim();
-                                    const subtotalText = match[4].replace(/\./g, '');
-                                    const subtotal = parseInt(subtotalText, 10);
-                                    
-                                    let price = subtotal / quantity;
-                                    orderData.items.push({
-                                        name: productName,
-                                        size: productSize,
-                                        quantity,
-                                        price,
-                                        subtotal
-                                    });
-                                }
-                            }
-                        });
-        
-                        let calculatedTotal = 0;
-                        orderData.items.forEach(item => {
-                            calculatedTotal += item.subtotal;
-                        });
-                        orderData.total = calculatedTotal;
-        
-                        if (orderData.items.length === 0) {
-                             showModal('<p class="text-red-500">Tidak dapat menemukan detail pesanan dalam teks. Mohon pastikan formatnya benar.</p>');
-                             return;
-                        }
-        
-                        await db.collection(`/artifacts/${appId}/public/data/orders`).add(orderData);
-                        showModal('<p class="text-green-500">Pesanan berhasil ditambahkan!</p>');
-                        adminQuickInput.value = '';
-                    } catch (error) {
-                        console.error("Error processing admin input: ", error);
-                        showModal('<p class="text-red-500">Terjadi kesalahan saat memproses pesanan. Mohon coba lagi.</p>');
-                    }
-                } else {
-                    showModal('<p class="text-red-500">Terjadi kesalahan koneksi database. Mohon coba lagi nanti.</p>');
-                }
-            });
-
-            // --- Bagian 2: Logika Database Firebase (diisolasi dari UI) ---
-            try {
-                // Variabel global yang disediakan oleh lingkungan Canvas
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-
-                // Inisialisasi Firebase
-                firebase.initializeApp(firebaseConfig);
-                const auth = firebase.auth();
-                const db = firebase.firestore();
-
-                let userId = '';
-
-                // Autentikasi pengguna secara anonim atau dengan token kustom
-                async function signIn() {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined') {
-                            await auth.signInWithCustomToken(__initial_auth_token);
-                        } else {
-                            await auth.signInAnonymously();
-                        }
-                    } catch (error) {
-                        console.error("Error during authentication:", error);
-                        // Jika token kustom gagal, coba masuk secara anonim sebagai fallback
-                        await auth.signInAnonymously();
-                    }
-                }
-
-                // Dapatkan user ID setelah autentikasi berhasil
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        userId = user.uid;
-                        setupRealtimeListener();
-                    } else {
-                        console.log("Authentication failed. User ID is not available.");
-                    }
-                });
-
-                // Setup listener real-time dari Firestore
-                function setupRealtimeListener() {
-                    db.collection(`/artifacts/${appId}/public/data/orders`)
-                        .onSnapshot((snapshot) => {
-                            allOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                            applyFiltersAndSearch();
-                        }, (error) => {
-                            console.error("Error getting real-time orders: ", error);
-                        });
-                }
-                
-                // Event listener untuk tombol hapus dan update status
-                ordersList.addEventListener('click', async (e) => {
-                    if (e.target.classList.contains('update-status-btn')) {
-                        const orderId = e.target.dataset.id;
-                        const newStatus = e.target.dataset.status;
-                        try {
-                            const orderRef = db.collection(`/artifacts/${appId}/public/data/orders`).doc(orderId);
-                            await orderRef.update({ status: newStatus });
-                            console.log(`Status pesanan ${orderId} berhasil diperbarui menjadi ${newStatus}.`);
-                        } catch (error) {
-                            console.error("Gagal memperbarui status: ", error);
-                        }
-                    }
-                    if (e.target.classList.contains('delete-order-btn')) {
-                        const orderId = e.target.dataset.id;
-                        try {
-                            const orderRef = db.collection(`/artifacts/${appId}/public/data/orders`).doc(orderId);
-                            await orderRef.delete();
-                            console.log(`Pesanan ${orderId} berhasil dihapus.`);
-                        } catch (error) {
-                            console.error("Gagal menghapus pesanan: ", error);
-                        }
-                    }
-                });
-                
-                // Panggil fungsi-fungsi awal saat halaman dimuat
-                signIn();
-
-            } catch (error) {
-                console.error("Kesalahan fatal saat menginisialisasi Firebase:", error);
-                // Menampilkan pesan error kepada pengguna
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'text-center text-red-500 mt-4';
-                errorMessage.innerHTML = 'Terjadi kesalahan saat menghubungkan ke database. Mohon coba lagi nanti.';
-                document.getElementById('app').appendChild(errorMessage);
+            if (!name || !phone || !address || !finalDeliveryOption) {
+                showModal('<p class="text-red-500">Mohon lengkapi semua data diri dan opsi pengiriman.</p>');
+                return;
             }
             
-            // Panggil fungsi-fungsi UI yang tidak bergantung pada database
-            renderProducts();
-            calculateTotal();
-            populateFilters();
-        };
+            let total = 0;
+            let hasOrder = false;
+            let orderedItems = [];
+            
+            flavors.forEach((flavor, flavorIndex) => {
+                sizes.forEach(size => {
+                    const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
+                    const qty = parseInt(qtyInput.value) || 0;
+                    
+                    if (qty > 0) {
+                        hasOrder = true;
+                        const subtotal = qty * size.price;
+                        total += subtotal;
+                        
+                        const gramasi = size.size.split(' ')[0];
 
+                        orderedItems.push({
+                            name: flavor.name,
+                            size: size.size,
+                            quantity: qty,
+                            price: size.price,
+                            subtotal: subtotal
+                        });
+                    }
+                });
+            });
+
+            if (!hasOrder) {
+                showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
+                return;
+            }
+
+            const orderData = {
+                name: name,
+                phone: phone,
+                address: address,
+                deliveryOption: finalDeliveryOption,
+                items: orderedItems,
+                total: total,
+                timestamp: serverTimestamp(),
+                userId: userId,
+                status: 'Menunggu'
+            };
+
+            try {
+                const ordersCollectionRef = collection(db, "orders");
+                await addDoc(ordersCollectionRef, orderData);
+                console.log("Order saved to Firestore successfully.");
+            } catch (error) {
+                console.error("Error saving order to Firestore: ", error);
+            }
+
+            let orderSummaryHtml = `
+                <p><strong>Nama:</strong> ${name}</p>
+                <p><strong>No. Telp:</strong> ${phone}</p>
+                <p><strong>Alamat:</strong> ${address}</p>
+                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
+                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
+                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
+            `;
+            orderedItems.forEach(item => {
+                const gramasi = item.size.split(' ')[0];
+                orderSummaryHtml += `<li>${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}</li>`;
+            });
+            orderSummaryHtml += `</ul>`;
+
+            orderSummaryHtml += `
+                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
+                <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
+            `;
+            
+            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
+            whatsappMessage += `Nama: ${name}\n`;
+            whatsappMessage += `No. Telp: ${phone}\n`;
+            whatsappMessage += `Alamat: ${address}\n`;
+            whatsappMessage += `Opsi Pengiriman: ${finalDeliveryOption}\n\n`;
+            whatsappMessage += `Detail Pesanan:\n`;
+            orderedItems.forEach(item => {
+                const gramasi = item.size.split(' ')[0];
+                whatsappMessage += `${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}\n`;
+            });
+            whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
+            whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
+            whatsappMessage += `Terima kasih!✨`;
+
+
+            showModal(`
+                <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
+                <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
+                <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
+                    Kirim Pesanan via WhatsApp
+                </a>
+            `);
+        });
+
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // --- View Toggling Logic ---
+        toggleViewBtn.addEventListener('click', () => {
+            mainView.classList.add('hidden');
+            posterContainer.classList.add('hidden');
+            stickyFooter.classList.add('hidden');
+            adminLoginView.classList.remove('hidden');
+            adminDashboard.classList.add('hidden');
+            adminPasswordInput.value = '';
+            loginErrorMessage.classList.add('hidden');
+            // Hide admin login link
+            adminLoginLinkContainer.classList.add('hidden');
+        });
+
+        // Login button handler
+        loginBtn.addEventListener('click', () => {
+            if (adminPasswordInput.value === adminPassword) {
+                adminLoginView.classList.add('hidden');
+                adminDashboard.classList.remove('hidden');
+            } else {
+                loginErrorMessage.classList.remove('hidden');
+            }
+        });
+
+        closeDashboardBtn.addEventListener('click', () => {
+            adminDashboard.classList.add('hidden');
+            mainView.classList.remove('hidden');
+            posterContainer.classList.remove('hidden');
+            stickyFooter.classList.remove('hidden');
+            adminLoginLinkContainer.classList.remove('hidden');
+        });
+
+        // --- Admin Dashboard Logic ---
+        const ordersRef = collection(db, "orders");
+        let initialLoad = true;
+        let unsubscribe;
+
+        function setupRealtimeListener() {
+            if (!isAuthenticated) return;
+            if (unsubscribe) {
+                unsubscribe();
+            }
+
+            unsubscribe = onSnapshot(ordersRef, (snapshot) => {
+                console.log("Real-time update received.");
+                allOrders = [];
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    order.id = doc.id;
+                    allOrders.push(order);
+                });
+                allOrders.sort((a, b) => b.timestamp - a.timestamp);
+                
+                if (initialLoad) {
+                    populateFilters();
+                    initialLoad = false;
+                }
+                updateDashboard();
+            }, (error) => {
+                console.error("Error fetching orders:", error);
+            });
+        }
+        
         function populateFilters() {
-            const flavors = [
-                { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
-                { name: 'Seaweed', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Seaweed' },
-                { name: 'Sambal Matah', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Sambal+Matah' },
-                { name: 'Cheese', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Cheese' },
-                { name: 'Balado Daun Jeruk', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Balado+Daun+Jeruk' }
-            ];
-    
-            const sizes = [
-                { size: '80gr (Small)', price: 25000 },
-                { size: '120gr (Large)', price: 35000 }
-            ];
-            const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
-            const flavorFilter = document.getElementById('flavor-filter');
-            const sizeFilter = document.getElementById('size-filter');
-            const deliveryFilter = document.getElementById('delivery-filter');
-
-            flavors.forEach(flavor => {
+            const allFlavors = [...new Set(allOrders.flatMap(order => order.items.map(item => item.name)))];
+            allFlavors.forEach(flavor => {
                 const option = document.createElement('option');
-                option.value = flavor.name;
-                option.textContent = flavor.name;
+                option.value = flavor;
+                option.textContent = flavor;
                 flavorFilter.appendChild(option);
             });
-            sizes.forEach(size => {
+
+            const allSizes = [...new Set(allOrders.flatMap(order => order.items.map(item => item.size)))];
+            allSizes.forEach(size => {
                 const option = document.createElement('option');
-                option.value = size.size;
-                option.textContent = size.size;
+                option.value = size;
+                option.textContent = size;
                 sizeFilter.appendChild(option);
             });
-            deliveryOptions.forEach(optionText => {
+
+            const allDeliveries = [...new Set(allOrders.map(order => order.deliveryOption))];
+            allDeliveries.forEach(delivery => {
                 const option = document.createElement('option');
-                option.value = optionText;
-                option.textContent = optionText;
+                option.value = delivery;
+                option.textContent = delivery;
                 deliveryFilter.appendChild(option);
             });
         }
+
+        function updateDashboard(filteredOrders = allOrders) {
+            if (filteredOrders.length === 0 && allOrders.length > 0) {
+                 // Check if the filtered list is empty but the main list is not
+                ordersList.innerHTML = '<p class="text-center text-gray-500">Tidak ada pesanan yang sesuai dengan filter.</p>';
+            } else {
+                renderOrders(filteredOrders);
+            }
+            
+            updateSummary(filteredOrders);
+            updateProductionSummary(filteredOrders);
+        }
+
+        function updateSummary(orders) {
+            let totalRevenue = 0;
+            let totalProductsSold = 0;
+            const uniqueBuyers = new Set();
+            
+            orders.forEach(order => {
+                totalRevenue += order.total;
+                uniqueBuyers.add(order.phone);
+                order.items.forEach(item => {
+                    totalProductsSold += item.quantity;
+                });
+            });
+
+            totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
+            totalOrdersEl.textContent = orders.length;
+            totalProductsSoldEl.textContent = totalProductsSold;
+            totalBuyersEl.textContent = uniqueBuyers.size;
+        }
+
+        function updateProductionSummary(orders) {
+            let totalProduction = 0;
+            const variantTotals = {};
+            
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (item.status !== 'Selesai') {
+                        const key = `${item.name} (${item.size})`;
+                        variantTotals[key] = (variantTotals[key] || 0) + item.quantity;
+                        totalProduction += item.quantity;
+                    }
+                });
+            });
+
+            productionTotalEl.textContent = totalProduction;
+            productionVariantGridEl.innerHTML = '';
+            for (const [key, total] of Object.entries(variantTotals)) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200';
+                itemDiv.innerHTML = `
+                    <p class="text-sm text-gray-700">${key}</p>
+                    <span class="font-bold text-orange-600">${total}</span>
+                `;
+                productionVariantGridEl.appendChild(itemDiv);
+            }
+        }
+
+        function renderOrders(orders) {
+            ordersList.innerHTML = '';
+            if (orders.length === 0) {
+                 ordersList.innerHTML = '<p class="text-center text-gray-500">Tidak ada pesanan.</p>';
+                 return;
+            }
+            orders.forEach(order => {
+                const orderDate = new Date(order.timestamp.seconds * 1000).toLocaleString('id-ID');
+                const orderElement = document.createElement('div');
+                orderElement.className = `bg-white p-6 rounded-xl shadow-md border border-gray-100 ${order.status === 'Selesai' ? 'border-green-500' : 'border-red-500'}`;
+
+                const itemsHtml = order.items.map(item => `
+                    <div class="flex justify-between items-center py-1">
+                        <span class="text-sm text-gray-600">${item.quantity}x ${item.name} (${item.size})</span>
+                        <span class="text-sm font-medium text-gray-800">Rp ${item.subtotal.toLocaleString('id-ID')}</span>
+                    </div>
+                `).join('');
+
+                const isCompleted = order.status === 'Selesai';
+                const statusButton = `<button class="toggle-status-btn w-full mt-4 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white ${isCompleted ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}" data-id="${order.id}" data-status="${order.status}">
+                    ${isCompleted ? 'Tandai Belum Selesai' : 'Tandai Selesai'}
+                </button>`;
+
+                const deleteButton = `<button class="delete-order-btn w-full mt-2 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-gray-500 hover:bg-gray-600" data-id="${order.id}">
+                    Hapus Pesanan
+                </button>`;
+
+                orderElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold text-orange-600">${order.name}</h4>
+                        <span class="text-sm text-gray-500">${orderDate}</span>
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-sm text-gray-700"><strong>No. HP:</strong> ${order.phone}</p>
+                        <p class="text-sm text-gray-700"><strong>Alamat:</strong> ${order.address}</p>
+                        <p class="text-sm text-gray-700"><strong>Pengiriman:</strong> ${order.deliveryOption}</p>
+                    </div>
+                    <div class="space-y-1 my-4 p-3 bg-gray-50 rounded-lg">
+                        <p class="font-semibold text-gray-800">Detail Pesanan:</p>
+                        ${itemsHtml}
+                    </div>
+                    <div class="flex justify-between items-center font-bold text-lg text-orange-600">
+                        <span>Total:</span>
+                        <span>Rp ${order.total.toLocaleString('id-ID')}</span>
+                    </div>
+                    ${statusButton}
+                    ${deleteButton}
+                `;
+                ordersList.appendChild(orderElement);
+            });
+        }
+
+        async function toggleOrderStatus(orderId, currentStatus) {
+            const newStatus = currentStatus === 'Selesai' ? 'Menunggu' : 'Selesai';
+            try {
+                const orderDocRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
+                await updateDoc(orderDocRef, {
+                    status: newStatus
+                });
+                console.log("Order status updated successfully.");
+            } catch (error) {
+                console.error("Error updating order status:", error);
+            }
+        }
+
+        async function deleteOrder(orderId) {
+            if (confirm("Apakah Anda yakin ingin menghapus pesanan ini?")) {
+                try {
+                    const orderDocRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
+                    await deleteDoc(orderDocRef);
+                    console.log("Order deleted successfully.");
+                } catch (error) {
+                    console.error("Error deleting order:", error);
+                }
+            }
+        }
+
+        ordersList.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('toggle-status-btn')) {
+                const orderId = target.dataset.id;
+                const currentStatus = target.dataset.status;
+                toggleOrderStatus(orderId, currentStatus);
+            } else if (target.classList.contains('delete-order-btn')) {
+                const orderId = target.dataset.id;
+                deleteOrder(orderId);
+            }
+        });
+
+        // Search and Filter Logic
+        function filterOrders() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedFlavor = flavorFilter.value;
+            const selectedSize = sizeFilter.value;
+            const selectedDelivery = deliveryFilter.value;
+
+            const filtered = allOrders.filter(order => {
+                const matchesSearch = order.name.toLowerCase().includes(searchTerm) ||
+                                      order.phone.includes(searchTerm) ||
+                                      order.address.toLowerCase().includes(searchTerm);
+                
+                const matchesFlavor = selectedFlavor ? order.items.some(item => item.name === selectedFlavor) : true;
+                const matchesSize = selectedSize ? order.items.some(item => item.size === selectedSize) : true;
+                const matchesDelivery = selectedDelivery ? order.deliveryOption === selectedDelivery : true;
+                
+                return matchesSearch && matchesFlavor && matchesSize && matchesDelivery;
+            });
+            updateDashboard(filtered);
+        }
+
+        searchInput.addEventListener('input', filterOrders);
+        flavorFilter.addEventListener('change', filterOrders);
+        sizeFilter.addEventListener('change', filterOrders);
+        deliveryFilter.addEventListener('change', filterOrders);
+        resetFilterBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            flavorFilter.value = '';
+            sizeFilter.value = '';
+            deliveryFilter.value = '';
+            updateDashboard(allOrders);
+        });
+
+        // Admin Quick Input Logic
+        processAdminInputBtn.addEventListener('click', async () => {
+            const inputText = adminQuickInput.value;
+            if (!inputText.trim()) {
+                showCustomModal('Peringatan', 'Mohon tempel teks pesanan.');
+                return;
+            }
+
+            try {
+                const lines = inputText.split('\n').map(line => line.trim());
+                const parsedOrder = parseWhatsappText(lines);
+
+                if (parsedOrder) {
+                    // Set a default status for quick input orders
+                    parsedOrder.status = 'Menunggu';
+                    parsedOrder.userId = userId;
+                    parsedOrder.timestamp = serverTimestamp();
+                    
+                    const ordersCollectionRef = collection(db, `/artifacts/${appId}/public/data/orders`);
+                    await addDoc(ordersCollectionRef, parsedOrder);
+                    showCustomModal('Berhasil', 'Pesanan berhasil disimpan ke database.');
+                    adminQuickInput.value = '';
+                } else {
+                    showCustomModal('Error', 'Gagal mengurai teks pesanan. Pastikan formatnya benar.');
+                }
+            } catch (error) {
+                console.error("Error processing admin input:", error);
+                showCustomModal('Error', `Terjadi kesalahan: ${error.message}`);
+            }
+        });
+
+        function parseWhatsappText(lines) {
+            const orderData = {
+                name: '',
+                phone: '',
+                address: '',
+                deliveryOption: '',
+                items: [],
+                total: 0
+            };
+
+            let inItemsSection = false;
+            let totalLineFound = false;
+
+            for (const line of lines) {
+                if (line.toLowerCase().startsWith('nama:')) {
+                    orderData.name = line.substring(5).trim();
+                } else if (line.toLowerCase().startsWith('no. telp:')) {
+                    orderData.phone = line.substring(9).trim();
+                } else if (line.toLowerCase().startsWith('alamat:')) {
+                    orderData.address = line.substring(7).trim();
+                } else if (line.toLowerCase().startsWith('opsi pengiriman:')) {
+                    orderData.deliveryOption = line.substring(16).trim();
+                } else if (line.toLowerCase().startsWith('detail pesanan:')) {
+                    inItemsSection = true;
+                } else if (line.toLowerCase().startsWith('total harga:')) {
+                    orderData.total = parseInt(line.replace(/[^0-9]/g, '')) || 0;
+                    totalLineFound = true;
+                    inItemsSection = false;
+                } else if (inItemsSection && !totalLineFound && line) {
+                    const match = line.match(/(\d+)x (.+) \((.+)\) - Rp (.+)/);
+                    if (match) {
+                        const quantity = parseInt(match[1]);
+                        const itemName = match[2].trim();
+                        const itemSize = `${match[3].trim()} (${match[3].trim() === '80gr' ? 'Small' : 'Large'})`;
+                        const subtotal = parseInt(match[4].replace(/[^0-9]/g, ''));
+                        orderData.items.push({
+                            name: itemName,
+                            size: itemSize,
+                            quantity: quantity,
+                            price: subtotal / quantity,
+                            subtotal: subtotal
+                        });
+                    }
+                }
+            }
+
+            if (!orderData.name || !orderData.phone || !orderData.items.length) {
+                return null;
+            }
+            return orderData;
+        }
+
+        // Initial render
+        renderProducts();
+        calculateTotal();
+        
     </script>
+
 </body>
 </html>
