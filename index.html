@@ -15,37 +15,16 @@
             background-image: linear-gradient(to bottom, #fde9c5, #fef4e5);
             padding-bottom: 9rem;
         }
-        .admin-ribbon {
-            position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            background-color: #3b82f6;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.65rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            z-index: 10;
-        }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
     <div id="app" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-4xl mx-auto my-8">
-        
-        <!-- Tombol Admin Login di bagian paling atas -->
-        <div id="admin-login-link-container" class="flex justify-center mb-4">
-            <button id="toggle-view-btn" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition duration-300 ease-in-out">
-                Admin Login
-            </button>
-        </div>
-
         <!-- Gambar produk dari URL GitHub yang Anda berikan -->
-        <div id="poster-container" class="mb-6 rounded-3xl overflow-hidden shadow-xl">
+        <div class="mb-6 rounded-3xl overflow-hidden shadow-xl">
             <img src="https://github.com/trinugrohomr3/for-order-kripew/blob/main/poster.png?raw=true" alt="Gambar Produk KRIPEW" class="w-full h-auto object-cover">
         </div>
 
-        <!-- Modal Konfirmasi -->
         <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
             <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
                 <div class="mt-3 text-center">
@@ -57,273 +36,95 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Modal Pesan Custom -->
-        <div id="custom-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
-                <div class="mt-3 text-center">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="custom-modal-title"></h3>
-                    <div id="custom-modal-message" class="mt-2 px-7 py-3 text-sm text-gray-500 text-left"></div>
-                    <div class="items-center px-4 py-3">
-                        <button id="custom-modal-close-btn" class="px-4 py-2 bg-gray-200 text-gray-700 text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">Tutup</button>
-                    </div>
-                </div>
-            </div>
+
+        <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
+        <div class="text-center text-sm mb-6 text-gray-500">
+            <p>Hai, terima kasih sudah mau order KRIPEW.</p>
+            <p>Berikut panduan untuk pengisian form:</p>
+            <ol class="list-decimal list-inside text-left mx-auto max-w-sm space-y-1 mt-2">
+                <li>Isi form dan pesananmu secara lengkap</li>
+                <li>Klik pesan</li>
+                <li>Cek kembali rekapan orderanmu</li>
+                <li>Klik kirim ke whatsapp admin (otomatis akan ter-link)</li>
+                <li>Pastikan rekapan pesanannya sesuai dan sudah terkirim ke WA admin ya!</li>
+            </ol>
+            <p class="mt-4">Note : Harga yang tertera blm termasuk ongkir 🤗</p>
+            <p>Terima kasih🤗 🫶🏻✨</p>
         </div>
-
-        <!-- Main Order Form View -->
-        <div id="main-view">
-            <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
-            <div class="text-center text-sm mb-6 text-gray-500">
-                <p>Hai, terima kasih sudah mau order KRIPEW.</p>
-                <p>Berikut panduan untuk pengisian form:</p>
-                <ol class="list-decimal list-inside text-left mx-auto max-w-sm space-y-1 mt-2">
-                    <li>Isi form dan pesananmu secara lengkap</li>
-                    <li>Klik pesan</li>
-                    <li>Cek kembali rekapan orderanmu</li>
-                    <li>Klik kirim ke whatsapp admin (otomatis akan ter-link)</li>
-                    <li>Pastikan rekapan pesanannya sesuai dan sudah terkirim ke WA admin ya!</li>
-                </ol>
-                <p class="mt-4">Note : Harga yang tertera blm termasuk ongkir 🤗</p>
-                <p>Terima kasih🤗 🫶🏻✨</p>
+        <form id="order-form" class="space-y-6">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
             </div>
-            <form id="order-form" class="space-y-6">
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                </div>
 
-                <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                    <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                </div>
-
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                    <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
-                    <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
-                    <div class="mt-2 space-y-2">
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
-                            <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
-                            <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
-                    <!-- Product grid container -->
-                    <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Admin Login View -->
-        <div id="admin-login-view" class="hidden">
-            <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">Login Admin</h2>
-            <div class="space-y-4">
-                <div>
-                    <label for="admin-password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
-                    <input type="password" id="admin-password" class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                </div>
-                <div id="login-error-message" class="text-red-500 text-sm hidden">Kata sandi salah. Silakan coba lagi.</div>
-                <button id="login-btn" class="w-full py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out">
-                    Login
-                </button>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
             </div>
-        </div>
-        
-        <!-- Admin Dashboard Section -->
-        <div id="admin-dashboard" class="hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-orange-600">Dashboard Admin</h2>
-                <button id="close-dashboard-btn" class="w-8 h-8 flex items-center justify-center text-2xl text-gray-500 hover:text-gray-800 transition duration-300 ease-in-out">&times;</button>
+
+            <div>
+                <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
+                <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
             </div>
-            
-            <!-- Ringkasan Order (Total Semua) -->
-            <div class="space-y-4 mb-8">
-                <h3 class="text-lg font-bold text-gray-800">Ringkasan Pesanan (Total Semua)</h3>
-                <div id="summary-dashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Total Pendapatan -->
-                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                        <p class="text-sm text-gray-500">Total Pendapatan</p>
-                        <p id="total-revenue" class="text-xl font-bold text-orange-600 mt-1">Rp 0</p>
-                    </div>
 
-                    <!-- Total Pesanan -->
-                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                        <p class="text-sm text-gray-500">Total Pesanan</p>
-                        <p id="total-orders" class="text-xl font-bold text-orange-600 mt-1">0</p>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
+                <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
+                <div class="mt-2 space-y-2">
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
                     </div>
-
-                    <!-- Total Produk Terjual -->
-                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                        <p class="text-sm text-gray-500">Total Produk Terjual</p>
-                        <p id="total-products-sold" class="text-xl font-bold text-orange-600 mt-1">0</p>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
                     </div>
-                    
-                    <!-- Total Pembeli -->
-                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                        <p class="text-sm text-gray-500">Total Pembeli (Unik)</p>
-                        <p id="total-buyers" class="text-xl font-bold text-orange-600 mt-1">0</p>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
+                        <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                     </div>
                 </div>
             </div>
 
-            <!-- Ringkasan Produksi (Pending) -->
-            <div class="space-y-4 mb-8">
-                <h3 class="text-lg font-bold text-gray-800">Ringkasan Produksi (Belum Selesai)</h3>
-                   <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                    <p class="text-sm text-gray-500 mb-2">Total yang harus diproduksi:</p>
-                    <p id="production-total" class="text-xl font-bold text-orange-600 mb-4">0</p>
-                    <h4 class="font-semibold text-gray-800 mb-2">Total per varian:</h4>
-                    <div id="production-variant-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <!-- Data produksi per varian akan di-generate oleh JS di sini -->
-                    </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
+                <!-- Product grid container -->
+                <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
                 </div>
             </div>
 
-            <!-- Filter dan Pencarian -->
-            <div class="mb-6 space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                <input type="text" id="search-input" placeholder="Cari pesanan..." class="flex-1 w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
-                <select id="flavor-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
-                    <option value="">Semua Rasa</option>
-                </select>
-                <select id="size-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
-                    <option value="">Semua Ukuran</option>
-                </select>
-                <select id="delivery-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
-                    <option value="">Semua Pengiriman</option>
-                </select>
-                <button id="reset-filter-btn" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-gray-200 hover:bg-gray-300 transition duration-300">Reset</button>
-            </div>
-
-            <!-- Detail Pesanan -->
-            <div class="space-y-4 mb-8">
-                <h3 class="text-lg font-bold text-gray-800">Detail Pesanan</h3>
-                <div id="orders-list" class="space-y-4">
-                    <!-- Orders will be rendered here -->
-                </div>
-            </div>
-
-            <!-- Admin Quick Input Section -->
-            <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">Input Cepat Admin</h3>
-                <p class="text-sm text-gray-500 mb-4">Tempelkan template pesanan dari WhatsApp di sini. Data akan diubah otomatis.</p>
-                <textarea id="admin-quick-input" rows="8" placeholder="Tempel teks pesanan di sini..." class="w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"></textarea>
-                <button id="process-admin-input-btn" class="w-full mt-4 py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
-                    Simpan Pesanan dari Teks
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
     
     <!-- Sticky footer with total price and order button -->
-    <div id="sticky-footer" class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
+    <div class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
         <div class="flex items-center justify-between">
             <p class="text-lg font-semibold text-orange-600">Total Harga: <span id="total-price" class="font-bold">Rp 0</span></p>
-            <button type="submit" form="order-form" class="flex-shrink-0 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
+            <button type="submit" form="order-form" class="flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
                 Pesan
             </button>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc, getDocs, setDoc, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // =================================================================================
-        // PENTING: Untuk menjalankan di GitHub, ganti nilai di bawah dengan konfigurasi Firebase Anda.
-        // Anda bisa mendapatkan ini di Konsol Firebase Anda (Project settings -> Your apps).
-        // Jangan hapus bagian '__app_id' dan '__initial_auth_token' karena diperlukan untuk preview di Gemini.
-        // =================================================================================
-        const firebaseConfig = {
-  apiKey: "AIzaSyAj475LLg397L_JyaHzUX6RNwSOryQJ5y0",
-  authDomain: "kripew-8fb9e.firebaseapp.com",
-  projectId: "kripew-8fb9e",
-  storageBucket: "kripew-8fb9e.firebasestorage.app",
-  messagingSenderId: "845882338290",
-  appId: "1:845882338290:web:4d026f7fcecefb8bb6d96b",
-  measurementId: "G-RRL9Y4NHL3"
-};
-        const adminPassword = 'admin123'; // Ganti dengan kata sandi yang lebih aman
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : yourFirebaseConfig;
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let userId = '';
-        let isAuthenticated = false;
-
-        // Set up custom modal functions
-        const customModal = document.getElementById('custom-modal');
-        const customModalTitle = document.getElementById('custom-modal-title');
-        const customModalMessage = document.getElementById('custom-modal-message');
-        const customModalCloseBtn = document.getElementById('custom-modal-close-btn');
-
-        function showCustomModal(title, message) {
-            customModalTitle.textContent = title;
-            customModalMessage.innerHTML = message;
-            customModal.classList.remove('hidden');
-        }
-
-        customModalCloseBtn.addEventListener('click', () => {
-            customModal.classList.add('hidden');
-        });
-
-        // Autentikasi dan set up listener
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                userId = user.uid;
-                isAuthenticated = true;
-                setupRealtimeListener();
-            } else {
-                console.log("Authentication failed. User ID is not available.");
-                isAuthenticated = false;
-                signInAnonymously(auth);
-            }
-        });
-        
-        if (typeof __initial_auth_token !== 'undefined') {
-            await signInWithCustomToken(auth, __initial_auth_token).catch(e => console.error("Custom token sign-in failed:", e));
-        }
-
-
+    <script>
         // Array of available flavors with their respective images
         const flavors = [
             { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
@@ -339,11 +140,29 @@
             { size: '120gr (Large)', price: 35000 }
         ];
 
-        // Array of delivery options for the filter dropdown
-        const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
-
         const whatsappNumber = '6285855550120';
+
+        // GANTI URL INI DENGAN URL GOOGLE FORM ANDA
+        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-P_QjU-JpL-g-QY_c8K6M_2XoEw_8n8bV-t1U/formResponse';
         
+        // GANTI ID DI BAWAH INI DENGAN ID PERTANYAAN DARI GOOGLE FORM ANDA
+        const formEntries = {
+            name: 'entry.123456789', // ID untuk Nama Lengkap
+            phone: 'entry.987654321', // ID untuk Nomor Telepon
+            address: 'entry.112233445', // ID untuk Alamat Lengkap
+            // Tambahkan ID untuk setiap varian produk di sini
+            saltedEgg75: 'entry.678901234',
+            saltedEgg115: 'entry.543210987',
+            seaweed75: 'entry.987654321',
+            seaweed115: 'entry.123456789',
+            sambalMatah75: 'entry.112233445',
+            sambalMatah115: 'entry.987654321',
+            cheese75: 'entry.123456789',
+            cheese115: 'entry.987654321',
+            baladoDaunJeruk75: 'entry.112233445',
+            baladoDaunJeruk115: 'entry.987654321',
+        };
+
         const productList = document.getElementById('product-list');
         const totalPriceEl = document.getElementById('total-price');
         const form = document.getElementById('order-form');
@@ -355,39 +174,7 @@
         const addressInput = document.getElementById('address');
         const otherDeliveryInput = document.getElementById('delivery-other-input');
 
-        const mainView = document.getElementById('main-view');
-        const adminLoginView = document.getElementById('admin-login-view');
-        const adminDashboard = document.getElementById('admin-dashboard');
-        
-        const toggleViewBtn = document.getElementById('toggle-view-btn');
-        const loginBtn = document.getElementById('login-btn');
-        const closeDashboardBtn = document.getElementById('close-dashboard-btn');
-        const adminPasswordInput = document.getElementById('admin-password');
-        const loginErrorMessage = document.getElementById('login-error-message');
-        const ordersList = document.getElementById('orders-list');
-        const posterContainer = document.getElementById('poster-container');
-        const stickyFooter = document.getElementById('sticky-footer');
-        const adminLoginLinkContainer = document.getElementById('admin-login-link-container');
-
-        // Dashboard elements
-        const totalRevenueEl = document.getElementById('total-revenue');
-        const totalOrdersEl = document.getElementById('total-orders');
-        const totalProductsSoldEl = document.getElementById('total-products-sold');
-        const totalBuyersEl = document.getElementById('total-buyers');
-        const productionTotalEl = document.getElementById('production-total');
-        const productionVariantGridEl = document.getElementById('production-variant-grid');
-        const searchInput = document.getElementById('search-input');
-        const flavorFilter = document.getElementById('flavor-filter');
-        const sizeFilter = document.getElementById('size-filter');
-        const deliveryFilter = document.getElementById('delivery-filter');
-        const resetFilterBtn = document.getElementById('reset-filter-btn');
-
-        // New admin quick input elements
-        const adminQuickInput = document.getElementById('admin-quick-input');
-        const processAdminInputBtn = document.getElementById('process-admin-input-btn');
-        
-        let allOrders = [];
-
+        // Render products based on flavors
         function renderProducts() {
             productList.innerHTML = '';
             flavors.forEach((flavor, flavorIndex) => {
@@ -396,6 +183,7 @@
                 
                 let sizeOptionsHtml = '';
                 sizes.forEach(size => {
+                    // Correctly handle spaces for unique IDs
                     const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
                     sizeOptionsHtml += `
                         <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
@@ -423,6 +211,7 @@
             });
         }
 
+        // Calculate total price
         function calculateTotal() {
             let total = 0;
             flavors.forEach((flavor, flavorIndex) => {
@@ -438,15 +227,18 @@
             totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
+        // Show confirmation modal
         function showModal(message) {
             confirmationMessage.innerHTML = message;
             modal.classList.remove('hidden');
         }
 
+        // Hide modal
         function hideModal() {
             modal.classList.add('hidden');
         }
 
+        // Event listeners
         productList.addEventListener('click', (e) => {
             const target = e.target;
             let qtyInput;
@@ -488,8 +280,23 @@
             
             let total = 0;
             let hasOrder = false;
-            let orderedItems = [];
             
+            let orderSummaryHtml = `
+                <p><strong>Nama:</strong> ${name}</p>
+                <p><strong>No. Telp:</strong> ${phone}</p>
+                <p><strong>Alamat:</strong> ${address}</p>
+                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
+                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
+                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
+            `;
+
+            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
+            whatsappMessage += `*Nama:* ${name}\n`;
+            whatsappMessage += `*No. Telp:* ${phone}\n`;
+            whatsappMessage += `*Alamat:* ${address}\n`;
+            whatsappMessage += `*Opsi Pengiriman:* ${finalDeliveryOption}\n\n`;
+            whatsappMessage += `*Detail Pesanan:*\n`;
+
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
                     const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
@@ -501,74 +308,28 @@
                         const subtotal = qty * size.price;
                         total += subtotal;
                         
+                        // Extract just the gramasi from the size string
                         const gramasi = size.size.split(' ')[0];
-
-                        orderedItems.push({
-                            name: flavor.name,
-                            size: size.size,
-                            quantity: qty,
-                            price: size.price,
-                            subtotal: subtotal
-                        });
+                        
+                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
+                        whatsappMessage += `${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
                     }
                 });
             });
+
+            orderSummaryHtml += `</ul>`;
 
             if (!hasOrder) {
                 showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
                 return;
             }
 
-            const orderData = {
-                name: name,
-                phone: phone,
-                address: address,
-                deliveryOption: finalDeliveryOption,
-                items: orderedItems,
-                total: total,
-                timestamp: serverTimestamp(),
-                userId: userId,
-                status: 'Menunggu'
-            };
-
-            try {
-                const ordersCollectionRef = collection(db, "orders");
-                await addDoc(ordersCollectionRef, orderData);
-                console.log("Order saved to Firestore successfully.");
-            } catch (error) {
-                console.error("Error saving order to Firestore: ", error);
-            }
-
-            let orderSummaryHtml = `
-                <p><strong>Nama:</strong> ${name}</p>
-                <p><strong>No. Telp:</strong> ${phone}</p>
-                <p><strong>Alamat:</strong> ${address}</p>
-                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
-                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
-                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
-            `;
-            orderedItems.forEach(item => {
-                const gramasi = item.size.split(' ')[0];
-                orderSummaryHtml += `<li>${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}</li>`;
-            });
-            orderSummaryHtml += `</ul>`;
-
             orderSummaryHtml += `
                 <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
                 <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
             `;
             
-            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
-            whatsappMessage += `Nama: ${name}\n`;
-            whatsappMessage += `No. Telp: ${phone}\n`;
-            whatsappMessage += `Alamat: ${address}\n`;
-            whatsappMessage += `Opsi Pengiriman: ${finalDeliveryOption}\n\n`;
-            whatsappMessage += `Detail Pesanan:\n`;
-            orderedItems.forEach(item => {
-                const gramasi = item.size.split(' ')[0];
-                whatsappMessage += `${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}\n`;
-            });
-            whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
+            whatsappMessage += `\n*Total Harga:* Rp ${total.toLocaleString('id-ID')}\n\n`;
             whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
             whatsappMessage += `Terima kasih!✨`;
 
@@ -584,363 +345,11 @@
         });
 
         closeModalBtn.addEventListener('click', hideModal);
-
-        // --- View Toggling Logic ---
-        toggleViewBtn.addEventListener('click', () => {
-            mainView.classList.add('hidden');
-            posterContainer.classList.add('hidden');
-            stickyFooter.classList.add('hidden');
-            adminLoginView.classList.remove('hidden');
-            adminDashboard.classList.add('hidden');
-            adminPasswordInput.value = '';
-            loginErrorMessage.classList.add('hidden');
-            // Hide admin login link
-            adminLoginLinkContainer.classList.add('hidden');
-        });
-
-        // Login button handler
-        loginBtn.addEventListener('click', () => {
-            if (adminPasswordInput.value === adminPassword) {
-                adminLoginView.classList.add('hidden');
-                adminDashboard.classList.remove('hidden');
-            } else {
-                loginErrorMessage.classList.remove('hidden');
-            }
-        });
-
-        closeDashboardBtn.addEventListener('click', () => {
-            adminDashboard.classList.add('hidden');
-            mainView.classList.remove('hidden');
-            posterContainer.classList.remove('hidden');
-            stickyFooter.classList.remove('hidden');
-            adminLoginLinkContainer.classList.remove('hidden');
-        });
-
-        // --- Admin Dashboard Logic ---
-        const ordersRef = collection(db, "orders");
-        let initialLoad = true;
-        let unsubscribe;
-
-        function setupRealtimeListener() {
-            if (!isAuthenticated) return;
-            if (unsubscribe) {
-                unsubscribe();
-            }
-
-            unsubscribe = onSnapshot(ordersRef, (snapshot) => {
-                console.log("Real-time update received.");
-                allOrders = [];
-                snapshot.forEach(doc => {
-                    const order = doc.data();
-                    order.id = doc.id;
-                    allOrders.push(order);
-                });
-                allOrders.sort((a, b) => b.timestamp - a.timestamp);
-                
-                if (initialLoad) {
-                    populateFilters();
-                    initialLoad = false;
-                }
-                updateDashboard();
-            }, (error) => {
-                console.error("Error fetching orders:", error);
-            });
-        }
         
-        function populateFilters() {
-            const allFlavors = [...new Set(allOrders.flatMap(order => order.items.map(item => item.name)))];
-            allFlavors.forEach(flavor => {
-                const option = document.createElement('option');
-                option.value = flavor;
-                option.textContent = flavor;
-                flavorFilter.appendChild(option);
-            });
-
-            const allSizes = [...new Set(allOrders.flatMap(order => order.items.map(item => item.size)))];
-            allSizes.forEach(size => {
-                const option = document.createElement('option');
-                option.value = size;
-                option.textContent = size;
-                sizeFilter.appendChild(option);
-            });
-
-            const allDeliveries = [...new Set(allOrders.map(order => order.deliveryOption))];
-            allDeliveries.forEach(delivery => {
-                const option = document.createElement('option');
-                option.value = delivery;
-                option.textContent = delivery;
-                deliveryFilter.appendChild(option);
-            });
-        }
-
-        function updateDashboard(filteredOrders = allOrders) {
-            if (filteredOrders.length === 0 && allOrders.length > 0) {
-                 // Check if the filtered list is empty but the main list is not
-                ordersList.innerHTML = '<p class="text-center text-gray-500">Tidak ada pesanan yang sesuai dengan filter.</p>';
-            } else {
-                renderOrders(filteredOrders);
-            }
-            
-            updateSummary(filteredOrders);
-            updateProductionSummary(filteredOrders);
-        }
-
-        function updateSummary(orders) {
-            let totalRevenue = 0;
-            let totalProductsSold = 0;
-            const uniqueBuyers = new Set();
-            
-            orders.forEach(order => {
-                totalRevenue += order.total;
-                uniqueBuyers.add(order.phone);
-                order.items.forEach(item => {
-                    totalProductsSold += item.quantity;
-                });
-            });
-
-            totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
-            totalOrdersEl.textContent = orders.length;
-            totalProductsSoldEl.textContent = totalProductsSold;
-            totalBuyersEl.textContent = uniqueBuyers.size;
-        }
-
-        function updateProductionSummary(orders) {
-            let totalProduction = 0;
-            const variantTotals = {};
-            
-            orders.forEach(order => {
-                order.items.forEach(item => {
-                    if (item.status !== 'Selesai') {
-                        const key = `${item.name} (${item.size})`;
-                        variantTotals[key] = (variantTotals[key] || 0) + item.quantity;
-                        totalProduction += item.quantity;
-                    }
-                });
-            });
-
-            productionTotalEl.textContent = totalProduction;
-            productionVariantGridEl.innerHTML = '';
-            for (const [key, total] of Object.entries(variantTotals)) {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'flex justify-between items-center bg-white p-3 rounded-lg shadow-sm border border-gray-200';
-                itemDiv.innerHTML = `
-                    <p class="text-sm text-gray-700">${key}</p>
-                    <span class="font-bold text-orange-600">${total}</span>
-                `;
-                productionVariantGridEl.appendChild(itemDiv);
-            }
-        }
-
-        function renderOrders(orders) {
-            ordersList.innerHTML = '';
-            if (orders.length === 0) {
-                 ordersList.innerHTML = '<p class="text-center text-gray-500">Tidak ada pesanan.</p>';
-                 return;
-            }
-            orders.forEach(order => {
-                const orderDate = new Date(order.timestamp.seconds * 1000).toLocaleString('id-ID');
-                const orderElement = document.createElement('div');
-                orderElement.className = `bg-white p-6 rounded-xl shadow-md border border-gray-100 ${order.status === 'Selesai' ? 'border-green-500' : 'border-red-500'}`;
-
-                const itemsHtml = order.items.map(item => `
-                    <div class="flex justify-between items-center py-1">
-                        <span class="text-sm text-gray-600">${item.quantity}x ${item.name} (${item.size})</span>
-                        <span class="text-sm font-medium text-gray-800">Rp ${item.subtotal.toLocaleString('id-ID')}</span>
-                    </div>
-                `).join('');
-
-                const isCompleted = order.status === 'Selesai';
-                const statusButton = `<button class="toggle-status-btn w-full mt-4 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white ${isCompleted ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}" data-id="${order.id}" data-status="${order.status}">
-                    ${isCompleted ? 'Tandai Belum Selesai' : 'Tandai Selesai'}
-                </button>`;
-
-                const deleteButton = `<button class="delete-order-btn w-full mt-2 py-2 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-gray-500 hover:bg-gray-600" data-id="${order.id}">
-                    Hapus Pesanan
-                </button>`;
-
-                orderElement.innerHTML = `
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-lg font-bold text-orange-600">${order.name}</h4>
-                        <span class="text-sm text-gray-500">${orderDate}</span>
-                    </div>
-                    <div class="mb-2">
-                        <p class="text-sm text-gray-700"><strong>No. HP:</strong> ${order.phone}</p>
-                        <p class="text-sm text-gray-700"><strong>Alamat:</strong> ${order.address}</p>
-                        <p class="text-sm text-gray-700"><strong>Pengiriman:</strong> ${order.deliveryOption}</p>
-                    </div>
-                    <div class="space-y-1 my-4 p-3 bg-gray-50 rounded-lg">
-                        <p class="font-semibold text-gray-800">Detail Pesanan:</p>
-                        ${itemsHtml}
-                    </div>
-                    <div class="flex justify-between items-center font-bold text-lg text-orange-600">
-                        <span>Total:</span>
-                        <span>Rp ${order.total.toLocaleString('id-ID')}</span>
-                    </div>
-                    ${statusButton}
-                    ${deleteButton}
-                `;
-                ordersList.appendChild(orderElement);
-            });
-        }
-
-        async function toggleOrderStatus(orderId, currentStatus) {
-            const newStatus = currentStatus === 'Selesai' ? 'Menunggu' : 'Selesai';
-            try {
-                const orderDocRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
-                await updateDoc(orderDocRef, {
-                    status: newStatus
-                });
-                console.log("Order status updated successfully.");
-            } catch (error) {
-                console.error("Error updating order status:", error);
-            }
-        }
-
-        async function deleteOrder(orderId) {
-            if (confirm("Apakah Anda yakin ingin menghapus pesanan ini?")) {
-                try {
-                    const orderDocRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
-                    await deleteDoc(orderDocRef);
-                    console.log("Order deleted successfully.");
-                } catch (error) {
-                    console.error("Error deleting order:", error);
-                }
-            }
-        }
-
-        ordersList.addEventListener('click', (e) => {
-            const target = e.target;
-            if (target.classList.contains('toggle-status-btn')) {
-                const orderId = target.dataset.id;
-                const currentStatus = target.dataset.status;
-                toggleOrderStatus(orderId, currentStatus);
-            } else if (target.classList.contains('delete-order-btn')) {
-                const orderId = target.dataset.id;
-                deleteOrder(orderId);
-            }
-        });
-
-        // Search and Filter Logic
-        function filterOrders() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedFlavor = flavorFilter.value;
-            const selectedSize = sizeFilter.value;
-            const selectedDelivery = deliveryFilter.value;
-
-            const filtered = allOrders.filter(order => {
-                const matchesSearch = order.name.toLowerCase().includes(searchTerm) ||
-                                      order.phone.includes(searchTerm) ||
-                                      order.address.toLowerCase().includes(searchTerm);
-                
-                const matchesFlavor = selectedFlavor ? order.items.some(item => item.name === selectedFlavor) : true;
-                const matchesSize = selectedSize ? order.items.some(item => item.size === selectedSize) : true;
-                const matchesDelivery = selectedDelivery ? order.deliveryOption === selectedDelivery : true;
-                
-                return matchesSearch && matchesFlavor && matchesSize && matchesDelivery;
-            });
-            updateDashboard(filtered);
-        }
-
-        searchInput.addEventListener('input', filterOrders);
-        flavorFilter.addEventListener('change', filterOrders);
-        sizeFilter.addEventListener('change', filterOrders);
-        deliveryFilter.addEventListener('change', filterOrders);
-        resetFilterBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            flavorFilter.value = '';
-            sizeFilter.value = '';
-            deliveryFilter.value = '';
-            updateDashboard(allOrders);
-        });
-
-        // Admin Quick Input Logic
-        processAdminInputBtn.addEventListener('click', async () => {
-            const inputText = adminQuickInput.value;
-            if (!inputText.trim()) {
-                showCustomModal('Peringatan', 'Mohon tempel teks pesanan.');
-                return;
-            }
-
-            try {
-                const lines = inputText.split('\n').map(line => line.trim());
-                const parsedOrder = parseWhatsappText(lines);
-
-                if (parsedOrder) {
-                    // Set a default status for quick input orders
-                    parsedOrder.status = 'Menunggu';
-                    parsedOrder.userId = userId;
-                    parsedOrder.timestamp = serverTimestamp();
-                    
-                    const ordersCollectionRef = collection(db, `/artifacts/${appId}/public/data/orders`);
-                    await addDoc(ordersCollectionRef, parsedOrder);
-                    showCustomModal('Berhasil', 'Pesanan berhasil disimpan ke database.');
-                    adminQuickInput.value = '';
-                } else {
-                    showCustomModal('Error', 'Gagal mengurai teks pesanan. Pastikan formatnya benar.');
-                }
-            } catch (error) {
-                console.error("Error processing admin input:", error);
-                showCustomModal('Error', `Terjadi kesalahan: ${error.message}`);
-            }
-        });
-
-        function parseWhatsappText(lines) {
-            const orderData = {
-                name: '',
-                phone: '',
-                address: '',
-                deliveryOption: '',
-                items: [],
-                total: 0
-            };
-
-            let inItemsSection = false;
-            let totalLineFound = false;
-
-            for (const line of lines) {
-                if (line.toLowerCase().startsWith('nama:')) {
-                    orderData.name = line.substring(5).trim();
-                } else if (line.toLowerCase().startsWith('no. telp:')) {
-                    orderData.phone = line.substring(9).trim();
-                } else if (line.toLowerCase().startsWith('alamat:')) {
-                    orderData.address = line.substring(7).trim();
-                } else if (line.toLowerCase().startsWith('opsi pengiriman:')) {
-                    orderData.deliveryOption = line.substring(16).trim();
-                } else if (line.toLowerCase().startsWith('detail pesanan:')) {
-                    inItemsSection = true;
-                } else if (line.toLowerCase().startsWith('total harga:')) {
-                    orderData.total = parseInt(line.replace(/[^0-9]/g, '')) || 0;
-                    totalLineFound = true;
-                    inItemsSection = false;
-                } else if (inItemsSection && !totalLineFound && line) {
-                    const match = line.match(/(\d+)x (.+) \((.+)\) - Rp (.+)/);
-                    if (match) {
-                        const quantity = parseInt(match[1]);
-                        const itemName = match[2].trim();
-                        const itemSize = `${match[3].trim()} (${match[3].trim() === '80gr' ? 'Small' : 'Large'})`;
-                        const subtotal = parseInt(match[4].replace(/[^0-9]/g, ''));
-                        orderData.items.push({
-                            name: itemName,
-                            size: itemSize,
-                            quantity: quantity,
-                            price: subtotal / quantity,
-                            subtotal: subtotal
-                        });
-                    }
-                }
-            }
-
-            if (!orderData.name || !orderData.phone || !orderData.items.length) {
-                return null;
-            }
-            return orderData;
-        }
-
         // Initial render
         renderProducts();
         calculateTotal();
-        
     </script>
-
 </body>
 </html>
+
