@@ -15,13 +15,34 @@
             background-image: linear-gradient(to bottom, #fde9c5, #fef4e5);
             padding-bottom: 9rem;
         }
+        /* Style for the "Input Admin" ribbon */
+        .admin-ribbon {
+            position: absolute;
+            top: 0.5rem; /* Adjusted position */
+            left: 0.5rem; /* Adjusted position */
+            background-color: #3b82f6; /* Blue-500 */
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.65rem; /* Smaller font size */
+            font-weight: 600;
+            border-radius: 0.5rem;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
     <div id="app" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-4xl mx-auto my-8">
+        
+        <!-- Tombol Admin Login di bagian paling atas -->
+        <div id="admin-login-link-container" class="flex justify-center mb-4">
+            <button id="toggle-view-btn" class="text-sm font-medium text-gray-500 hover:text-gray-700 transition duration-300 ease-in-out">
+                Admin Login
+            </button>
+        </div>
+
         <!-- Gambar produk dari URL GitHub yang Anda berikan -->
-        <div class="mb-6 rounded-3xl overflow-hidden shadow-xl">
+        <div id="poster-container" class="mb-6 rounded-3xl overflow-hidden shadow-xl">
             <img src="https://github.com/trinugrohomr3/for-order-kripew/blob/main/poster.png?raw=true" alt="Gambar Produk KRIPEW" class="w-full h-auto object-cover">
         </div>
 
@@ -37,94 +58,223 @@
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
-        <div class="text-center text-sm mb-6 text-gray-500">
-            <p>Hai, terima kasih sudah mau order KRIPEW.</p>
-            <p>Berikut panduan untuk pengisian form:</p>
-            <ol class="list-decimal list-inside text-left mx-auto max-w-sm space-y-1 mt-2">
-                <li>Isi form dan pesananmu secara lengkap</li>
-                <li>Klik pesan</li>
-                <li>Cek kembali rekapan orderanmu</li>
-                <li>Klik kirim ke whatsapp admin (otomatis akan ter-link)</li>
-                <li>Pastikan rekapan pesanannya sesuai dan sudah terkirim ke WA admin ya!</li>
-            </ol>
-            <p class="mt-4">Note : Harga yang tertera blm termasuk ongkir 🤗</p>
-            <p>Terima kasih🤗 🫶🏻✨</p>
+        <!-- Main Order Form View -->
+        <div id="main-view">
+            <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
+            <div class="text-center text-sm mb-6 text-gray-500">
+                <p>Hai, terima kasih sudah mau order KRIPEW.</p>
+                <p>Berikut panduan untuk pengisian form:</p>
+                <ol class="list-decimal list-inside text-left mx-auto max-w-sm space-y-1 mt-2">
+                    <li>Isi form dan pesananmu secara lengkap</li>
+                    <li>Klik pesan</li>
+                    <li>Cek kembali rekapan orderanmu</li>
+                    <li>Klik kirim ke whatsapp admin (otomatis akan ter-link)</li>
+                    <li>Pastikan rekapan pesanannya sesuai dan sudah terkirim ke WA admin ya!</li>
+                </ol>
+                <p class="mt-4">Note : Harga yang tertera blm termasuk ongkir 🤗</p>
+                <p>Terima kasih🤗 🫶🏻✨</p>
+            </div>
+            <form id="order-form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                    <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                    <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
+                    <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
+                    <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
+                    <div class="mt-2 space-y-2">
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
+                            <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
+                            <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
+                    <!-- Product grid container -->
+                    <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
+                    </div>
+                </div>
+            </form>
         </div>
-        <form id="order-form" class="space-y-6">
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-            </div>
 
-            <div>
-                <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+        <!-- Admin Login View -->
+        <div id="admin-login-view" class="hidden">
+            <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">Login Admin</h2>
+            <div class="space-y-4">
+                <div>
+                    <label for="admin-password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                    <input type="password" id="admin-password" class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+                </div>
+                <div id="login-error-message" class="text-red-500 text-sm hidden">Kata sandi salah. Silakan coba lagi.</div>
+                <button id="login-btn" class="w-full py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300 ease-in-out">
+                    Login
+                </button>
             </div>
-
-            <div>
-                <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
+        </div>
+        
+        <!-- Admin Dashboard Section -->
+        <div id="admin-dashboard" class="hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-orange-600">Dashboard Admin</h2>
+                <button id="close-dashboard-btn" class="w-8 h-8 flex items-center justify-center text-2xl text-gray-500 hover:text-gray-800 transition duration-300 ease-in-out">&times;</button>
             </div>
+            
+            <!-- Ringkasan Order (Total Semua) -->
+            <div class="space-y-4 mb-8">
+                <h3 class="text-lg font-bold text-gray-800">Ringkasan Pesanan (Total Semua)</h3>
+                <div id="summary-dashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Total Pendapatan -->
+                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                        <p class="text-sm text-gray-500">Total Pendapatan</p>
+                        <p id="total-revenue" class="text-xl font-bold text-orange-600 mt-1">Rp 0</p>
+                    </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
-                <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
-                <div class="mt-2 space-y-2">
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
+                    <!-- Total Pesanan -->
+                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                        <p class="text-sm text-gray-500">Total Pesanan</p>
+                        <p id="total-orders" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
+
+                    <!-- Total Produk Terjual -->
+                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                        <p class="text-sm text-gray-500">Total Produk Terjual</p>
+                        <p id="total-products-sold" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
-                        <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
-                        <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                    
+                    <!-- Total Pembeli -->
+                    <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                        <p class="text-sm text-gray-500">Total Pembeli (Unik)</p>
+                        <p id="total-buyers" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
-                <!-- Product grid container -->
-                <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
+            <!-- Ringkasan Produksi (Pending) -->
+            <div class="space-y-4 mb-8">
+                <h3 class="text-lg font-bold text-gray-800">Ringkasan Produksi (Belum Selesai)</h3>
+                 <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                    <p class="text-sm text-gray-500 mb-2">Total yang harus diproduksi:</p>
+                    <p id="production-total" class="text-xl font-bold text-orange-600 mb-4">0</p>
+                    <h4 class="font-semibold text-gray-800 mb-2">Total per varian:</h4>
+                    <div id="production-variant-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <!-- Data produksi per varian akan di-generate oleh JS di sini -->
+                    </div>
                 </div>
             </div>
 
-        </form>
+            <!-- Filter dan Pencarian -->
+            <div class="mb-6 space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+                <input type="text" id="search-input" placeholder="Cari pesanan..." class="flex-1 w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                <select id="flavor-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                    <option value="">Semua Rasa</option>
+                </select>
+                <select id="size-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                    <option value="">Semua Ukuran</option>
+                </select>
+                <select id="delivery-filter" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-white focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                    <option value="">Semua Pengiriman</option>
+                </select>
+                <button id="reset-filter-btn" class="w-full sm:w-auto px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm bg-gray-200 hover:bg-gray-300 transition duration-300">Reset</button>
+            </div>
+
+            <!-- Detail Pesanan -->
+            <div class="space-y-4 mb-8">
+                <h3 class="text-lg font-bold text-gray-800">Detail Pesanan</h3>
+                <div id="orders-list" class="space-y-4">
+                    <!-- Orders will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Admin Quick Input Section -->
+            <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
+                <h3 class="text-lg font-bold text-gray-800 mb-2">Input Cepat Admin</h3>
+                <p class="text-sm text-gray-500 mb-4">Tempelkan template pesanan dari WhatsApp di sini. Data akan diubah otomatis.</p>
+                <textarea id="admin-quick-input" rows="8" placeholder="Tempel teks pesanan di sini..." class="w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"></textarea>
+                <button id="process-admin-input-btn" class="w-full mt-4 py-3 px-4 rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
+                    Simpan Pesanan dari Teks
+                </button>
+            </div>
+        </div>
     </div>
     
     <!-- Sticky footer with total price and order button -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
+    <div id="sticky-footer" class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
         <div class="flex items-center justify-between">
             <p class="text-lg font-semibold text-orange-600">Total Harga: <span id="total-price" class="font-bold">Rp 0</span></p>
-            <button type="submit" form="order-form" class="flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
+            <button type="submit" form="order-form" class="flex-shrink-0 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
                 Pesan
             </button>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Firebase Setup
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userId = '';
+        if (typeof __initial_auth_token !== 'undefined') {
+            signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+            signInAnonymously(auth);
+        }
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                userId = user.uid;
+                // Once authenticated, start listening to orders
+                setupRealtimeListener();
+            } else {
+                console.log("Authentication failed. User ID is not available.");
+            }
+        });
+
         // Array of available flavors with their respective images
         const flavors = [
             { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
@@ -140,29 +290,11 @@
             { size: '120gr (Large)', price: 35000 }
         ];
 
+        // Array of delivery options for the filter dropdown
+        const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
+
         const whatsappNumber = '6285855550120';
-
-        // GANTI URL INI DENGAN URL GOOGLE FORM ANDA
-        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-P_QjU-JpL-g-QY_c8K6M_2XoEw_8n8bV-t1U/formResponse';
         
-        // GANTI ID DI BAWAH INI DENGAN ID PERTANYAAN DARI GOOGLE FORM ANDA
-        const formEntries = {
-            name: 'entry.123456789', // ID untuk Nama Lengkap
-            phone: 'entry.987654321', // ID untuk Nomor Telepon
-            address: 'entry.112233445', // ID untuk Alamat Lengkap
-            // Tambahkan ID untuk setiap varian produk di sini
-            saltedEgg75: 'entry.678901234',
-            saltedEgg115: 'entry.543210987',
-            seaweed75: 'entry.987654321',
-            seaweed115: 'entry.123456789',
-            sambalMatah75: 'entry.112233445',
-            sambalMatah115: 'entry.987654321',
-            cheese75: 'entry.123456789',
-            cheese115: 'entry.987654321',
-            baladoDaunJeruk75: 'entry.112233445',
-            baladoDaunJeruk115: 'entry.987654321',
-        };
-
         const productList = document.getElementById('product-list');
         const totalPriceEl = document.getElementById('total-price');
         const form = document.getElementById('order-form');
@@ -174,6 +306,40 @@
         const addressInput = document.getElementById('address');
         const otherDeliveryInput = document.getElementById('delivery-other-input');
 
+        const mainView = document.getElementById('main-view');
+        const adminLoginView = document.getElementById('admin-login-view');
+        const adminDashboard = document.getElementById('admin-dashboard');
+        
+        const toggleViewBtn = document.getElementById('toggle-view-btn');
+        const loginBtn = document.getElementById('login-btn');
+        const closeDashboardBtn = document.getElementById('close-dashboard-btn');
+        const adminPasswordInput = document.getElementById('admin-password');
+        const loginErrorMessage = document.getElementById('login-error-message');
+        const ordersList = document.getElementById('orders-list');
+        const posterContainer = document.getElementById('poster-container');
+        const stickyFooter = document.getElementById('sticky-footer');
+        const adminLoginLinkContainer = document.getElementById('admin-login-link-container');
+
+        // Dashboard elements
+        const totalRevenueEl = document.getElementById('total-revenue');
+        const totalOrdersEl = document.getElementById('total-orders');
+        const totalProductsSoldEl = document.getElementById('total-products-sold');
+        const totalBuyersEl = document.getElementById('total-buyers');
+        const productionTotalEl = document.getElementById('production-total');
+        const productionVariantGridEl = document.getElementById('production-variant-grid');
+        const searchInput = document.getElementById('search-input');
+        const flavorFilter = document.getElementById('flavor-filter');
+        const sizeFilter = document.getElementById('size-filter');
+        const deliveryFilter = document.getElementById('delivery-filter'); // New delivery filter
+        const resetFilterBtn = document.getElementById('reset-filter-btn');
+
+        // New admin quick input elements
+        const adminQuickInput = document.getElementById('admin-quick-input');
+        const processAdminInputBtn = document.getElementById('process-admin-input-btn');
+        
+        // Global variable to store all orders fetched from Firestore
+        let allOrders = [];
+
         // Render products based on flavors
         function renderProducts() {
             productList.innerHTML = '';
@@ -183,7 +349,6 @@
                 
                 let sizeOptionsHtml = '';
                 sizes.forEach(size => {
-                    // Correctly handle spaces for unique IDs
                     const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
                     sizeOptionsHtml += `
                         <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
@@ -238,7 +403,7 @@
             modal.classList.add('hidden');
         }
 
-        // Event listeners
+        // Event listeners for product quantity
         productList.addEventListener('click', (e) => {
             const target = e.target;
             let qtyInput;
@@ -257,6 +422,7 @@
             }
         });
 
+        // Form submission handler
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -280,23 +446,8 @@
             
             let total = 0;
             let hasOrder = false;
+            let orderedItems = [];
             
-            let orderSummaryHtml = `
-                <p><strong>Nama:</strong> ${name}</p>
-                <p><strong>No. Telp:</strong> ${phone}</p>
-                <p><strong>Alamat:</strong> ${address}</p>
-                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
-                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
-                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
-            `;
-
-            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
-            whatsappMessage += `*Nama:* ${name}\n`;
-            whatsappMessage += `*No. Telp:* ${phone}\n`;
-            whatsappMessage += `*Alamat:* ${address}\n`;
-            whatsappMessage += `*Opsi Pengiriman:* ${finalDeliveryOption}\n\n`;
-            whatsappMessage += `*Detail Pesanan:*\n`;
-
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
                     const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
@@ -310,26 +461,73 @@
                         
                         // Extract just the gramasi from the size string
                         const gramasi = size.size.split(' ')[0];
-                        
-                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
-                        whatsappMessage += `${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+
+                        orderedItems.push({
+                            name: flavor.name,
+                            size: size.size,
+                            quantity: qty,
+                            price: size.price,
+                            subtotal: subtotal
+                        });
                     }
                 });
             });
-
-            orderSummaryHtml += `</ul>`;
 
             if (!hasOrder) {
                 showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
                 return;
             }
 
+            const orderData = {
+                name: name,
+                phone: phone,
+                address: address,
+                deliveryOption: finalDeliveryOption,
+                items: orderedItems,
+                total: total,
+                timestamp: serverTimestamp(),
+                userId: userId, // Store the user ID for tracking
+                status: 'Menunggu' // Default status
+            };
+
+            // Save order to Firestore
+            try {
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/orders`), orderData);
+                console.log("Order saved to Firestore successfully.");
+            } catch (error) {
+                console.error("Error saving order to Firestore: ", error);
+            }
+
+            let orderSummaryHtml = `
+                <p><strong>Nama:</strong> ${name}</p>
+                <p><strong>No. Telp:</strong> ${phone}</p>
+                <p><strong>Alamat:</strong> ${address}</p>
+                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
+                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
+                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
+            `;
+            orderedItems.forEach(item => {
+                const gramasi = item.size.split(' ')[0];
+                orderSummaryHtml += `<li>${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}</li>`;
+            });
+            orderSummaryHtml += `</ul>`;
+
             orderSummaryHtml += `
                 <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
                 <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
             `;
             
-            whatsappMessage += `\n*Total Harga:* Rp ${total.toLocaleString('id-ID')}\n\n`;
+            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
+            whatsappMessage += `Nama: ${name}\n`;
+            whatsappMessage += `No. Telp: ${phone}\n`;
+            whatsappMessage += `Alamat: ${address}\n`;
+            whatsappMessage += `Opsi Pengiriman: ${finalDeliveryOption}\n\n`;
+            whatsappMessage += `Detail Pesanan:\n`;
+            orderedItems.forEach(item => {
+                const gramasi = item.size.split(' ')[0];
+                whatsappMessage += `${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}\n`;
+            });
+            whatsappMessage += `\nTotal Harga: Rp ${total.toLocaleString('id-ID')}\n\n`;
             whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
             whatsappMessage += `Terima kasih!✨`;
 
@@ -345,10 +543,375 @@
         });
 
         closeModalBtn.addEventListener('click', hideModal);
+
+        // --- View Toggling Logic ---
+        const adminPassword = 'admin123';
+
+        // Main button to go to login view
+        toggleViewBtn.addEventListener('click', () => {
+            mainView.classList.add('hidden');
+            posterContainer.classList.add('hidden');
+            stickyFooter.classList.add('hidden');
+            adminLoginView.classList.remove('hidden');
+            adminPasswordInput.value = '';
+            loginErrorMessage.classList.add('hidden');
+        });
+
+        // Login button handler
+        loginBtn.addEventListener('click', () => {
+            if (adminPasswordInput.value === adminPassword) {
+                adminLoginView.classList.add('hidden');
+                adminDashboard.classList.remove('hidden');
+                loginErrorMessage.classList.add('hidden');
+                adminLoginLinkContainer.classList.add('hidden'); // Hide the Admin Login link
+            } else {
+                loginErrorMessage.classList.remove('hidden');
+            }
+        });
+
+        // Button on dashboard to go back to main form
+        closeDashboardBtn.addEventListener('click', () => {
+            adminDashboard.classList.add('hidden');
+            mainView.classList.remove('hidden');
+            posterContainer.classList.remove('hidden');
+            stickyFooter.classList.remove('hidden');
+            adminLoginLinkContainer.classList.remove('hidden'); // Show the Admin Login link again
+        });
+
+        // Populate filters
+        function populateFilters() {
+            flavors.forEach(flavor => {
+                const option = document.createElement('option');
+                option.value = flavor.name;
+                option.textContent = flavor.name;
+                flavorFilter.appendChild(option);
+            });
+            sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size.size;
+                option.textContent = size.size;
+                sizeFilter.appendChild(option);
+            });
+            // New: Populate delivery options for the filter
+            deliveryOptions.forEach(optionText => {
+                const option = document.createElement('option');
+                option.value = optionText;
+                option.textContent = optionText;
+                deliveryFilter.appendChild(option);
+            });
+        }
         
+        // Render filtered/searched orders and update summary
+        function renderDashboard(ordersToRender) {
+            let totalRevenue = 0;
+            let totalProductsSold = 0;
+            let uniqueBuyers = new Set();
+            let productionTotal = 0;
+            let productionVariantTotals = {};
+
+            ordersList.innerHTML = '';
+
+            // Calculate total summary from ALL orders
+            totalOrdersEl.textContent = allOrders.length;
+            allOrders.forEach((order) => {
+                totalRevenue += order.total;
+                uniqueBuyers.add(order.phone);
+                order.items.forEach(item => {
+                    totalProductsSold += item.quantity;
+                });
+            });
+            
+            // Calculate production summary from PENDING orders
+            const pendingOrders = allOrders.filter(order => order.status !== 'Selesai');
+            pendingOrders.forEach((order) => {
+                 order.items.forEach(item => {
+                    productionTotal += item.quantity;
+                    const key = `${item.name} (${item.size})`;
+                    productionVariantTotals[key] = (productionVariantTotals[key] || 0) + item.quantity;
+                });
+            });
+
+            // Rendering individual order cards based on the filtered list
+            ordersToRender.forEach((order) => {
+                const orderDate = order.timestamp ? new Date(order.timestamp.seconds * 1000).toLocaleString('id-ID') : 'N/A';
+                
+                let itemsHtml = order.items.map(item => {
+                    return `
+                        <div class="text-sm">
+                            <span class="font-medium">${item.name} (${item.size}):</span> ${item.quantity} pcs
+                            <span class="text-xs text-gray-500">- Rp ${item.subtotal.toLocaleString('id-ID')}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const orderCard = document.createElement('div');
+                orderCard.className = 'bg-white p-4 rounded-xl shadow-md border border-gray-200 relative';
+                
+                let statusBadgeClass = '';
+                if (order.status === 'Selesai') {
+                    statusBadgeClass = 'bg-green-100 text-green-700';
+                } else if (order.status === 'Diproses') {
+                    statusBadgeClass = 'bg-yellow-100 text-yellow-700';
+                } else {
+                    statusBadgeClass = 'bg-gray-100 text-gray-700';
+                }
+
+                let statusButtonHtml = '';
+                if (order.status === 'Menunggu') {
+                    statusButtonHtml = `
+                        <button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">
+                            Diproses
+                        </button>
+                    `;
+                } else if (order.status === 'Diproses') {
+                     statusButtonHtml = `
+                        <button class="update-status-btn bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-green-600 transition-colors" data-id="${order.id}" data-status="Selesai">
+                            Siap
+                        </button>
+                    `;
+                } else if (order.status === 'Selesai') {
+                     statusButtonHtml = `
+                        <button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">
+                            Diproses
+                        </button>
+                    `;
+                }
+                
+                // Moved the ribbon to be a part of the card's inner HTML
+                let ribbonHtml = '';
+                if (order.is_admin_input) {
+                    ribbonHtml = '<span class="text-xs font-semibold text-gray-400 ml-2">Input Admin</span>';
+                }
+                
+                // Now we use the 'total' field directly from the order data
+                const displayedTotal = order.total.toLocaleString('id-ID');
+
+                orderCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-bold text-gray-800">${order.name}</h4>
+                            <p class="text-xs text-gray-500">ID Pesanan: ${order.id}</p>
+                        </div>
+                        <div class="text-xs text-gray-400 text-right">
+                           <span>${orderDate}</span>
+                           ${ribbonHtml}
+                        </div>
+                    </div>
+                    <div class="space-y-1 text-sm text-gray-600 mb-2">
+                        <p>📞 ${order.phone}</p>
+                        <p>🏠 ${order.address}</p>
+                        <p>🚚 ${order.deliveryOption}</p>
+                    </div>
+                    <div class="mt-3">
+                        ${itemsHtml}
+                    </div>
+                    <div class="mt-3 flex flex-wrap items-center justify-between gap-2">
+                        <p class="font-bold text-orange-600">Total: Rp ${displayedTotal}</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm px-2 py-1 rounded-full font-semibold ${statusBadgeClass}">
+                                Status: ${order.status}
+                            </span>
+                            ${statusButtonHtml}
+                            <button class="delete-order-btn bg-red-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-red-600 transition-colors" data-id="${order.id}">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                `;
+                ordersList.appendChild(orderCard);
+            });
+
+            // Render aggregated data to summary sections
+            totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
+            totalProductsSoldEl.textContent = totalProductsSold.toLocaleString('id-ID');
+            totalBuyersEl.textContent = uniqueBuyers.size;
+            totalOrdersEl.textContent = allOrders.length;
+
+            productionTotalEl.textContent = productionTotal.toLocaleString('id-ID');
+            productionVariantGridEl.innerHTML = '';
+            for (const variant in productionVariantTotals) {
+                const variantCard = document.createElement('div');
+                variantCard.className = 'bg-yellow-200 p-3 rounded-lg text-sm font-medium flex justify-between items-center';
+                variantCard.innerHTML = `
+                    <span>${variant}</span>
+                    <span class="font-bold text-yellow-800">${productionVariantTotals[variant]} pcs</span>
+                `;
+                productionVariantGridEl.appendChild(variantCard);
+            }
+        }
+        
+        // Apply filters and search
+        function applyFiltersAndSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedFlavor = flavorFilter.value;
+            const selectedSize = sizeFilter.value;
+            const selectedDelivery = deliveryFilter.value; // New filter value
+
+            const filteredOrders = allOrders.filter(order => {
+                // Search logic
+                const matchesSearch = searchTerm === '' ||
+                    order.name.toLowerCase().includes(searchTerm) ||
+                    order.phone.includes(searchTerm) ||
+                    order.address.toLowerCase().includes(searchTerm) ||
+                    order.items.some(item =>
+                        item.name.toLowerCase().includes(searchTerm) ||
+                        item.size.toLowerCase().includes(searchTerm)
+                    );
+                
+                // Filter logic
+                const matchesFlavor = selectedFlavor === '' ||
+                    order.items.some(item => item.name === selectedFlavor);
+
+                const matchesSize = selectedSize === '' ||
+                    order.items.some(item => item.size === selectedSize);
+                    
+                const matchesDelivery = selectedDelivery === '' ||
+                    order.deliveryOption === selectedDelivery;
+
+                return matchesSearch && matchesFlavor && matchesSize && matchesDelivery;
+            });
+
+            renderDashboard(filteredOrders);
+        }
+
+        // Real-time listener for orders
+        function setupRealtimeListener() {
+            onSnapshot(collection(db, `/artifacts/${appId}/public/data/orders`), (snapshot) => {
+                allOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Re-apply filters and search with the new data
+                applyFiltersAndSearch();
+            }, (error) => {
+                console.error("Error getting real-time orders: ", error);
+            });
+        }
+        
+        // Event listeners for filter and search controls
+        searchInput.addEventListener('input', applyFiltersAndSearch);
+        flavorFilter.addEventListener('change', applyFiltersAndSearch);
+        sizeFilter.addEventListener('change', applyFiltersAndSearch);
+        deliveryFilter.addEventListener('change', applyFiltersAndSearch); // New event listener
+        resetFilterBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            flavorFilter.value = '';
+            sizeFilter.value = '';
+            deliveryFilter.value = ''; // Reset new filter
+            applyFiltersAndSearch();
+        });
+
+        // Event listener for dynamic buttons inside the orders list
+        ordersList.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('update-status-btn')) {
+                const orderId = e.target.dataset.id;
+                const newStatus = e.target.dataset.status;
+                try {
+                    const orderRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
+                    await updateDoc(orderRef, { status: newStatus });
+                    console.log(`Status pesanan ${orderId} berhasil diperbarui menjadi ${newStatus}.`);
+                } catch (error) {
+                    console.error("Gagal memperbarui status: ", error);
+                }
+            }
+            if (e.target.classList.contains('delete-order-btn')) {
+                const orderId = e.target.dataset.id;
+                try {
+                    const orderRef = doc(db, `/artifacts/${appId}/public/data/orders`, orderId);
+                    await deleteDoc(orderRef);
+                    console.log(`Pesanan ${orderId} berhasil dihapus.`);
+                } catch (error) {
+                    console.error("Gagal menghapus pesanan: ", error);
+                }
+            }
+        });
+
+        // Handler for the new admin quick input button
+        processAdminInputBtn.addEventListener('click', async () => {
+            const text = adminQuickInput.value;
+            if (!text.trim()) {
+                showModal('<p class="text-red-500">Kolom input teks tidak boleh kosong.</p>');
+                return;
+            }
+
+            try {
+                const lines = text.split('\n').map(line => line.trim());
+                
+                const extractValue = (key) => {
+                    const line = lines.find(l => l.toLowerCase().startsWith(key.toLowerCase()));
+                    return line ? line.split(':').slice(1).join(':').trim() : 'N/A';
+                };
+
+                const orderData = {
+                    name: extractValue('Nama:'),
+                    phone: extractValue('No. Telp:'),
+                    address: extractValue('Alamat:'),
+                    deliveryOption: extractValue('Opsi Pengiriman:'),
+                    items: [],
+                    total: 0,
+                    timestamp: serverTimestamp(),
+                    is_admin_input: true,
+                    status: 'Menunggu'
+                };
+                
+                let itemsSection = false;
+                lines.forEach(line => {
+                    if (line.trim().toLowerCase() === 'detail pesanan:') {
+                        itemsSection = true;
+                        return;
+                    }
+
+                    if (line.trim().toLowerCase().startsWith('total harga:')) {
+                        itemsSection = false;
+                        return;
+                    }
+
+                    if (itemsSection && line.trim().length > 0) {
+                        // Regex to capture quantity, product name, size, and subtotal
+                        const match = line.match(/^(\d+)x\s(.+?)\s\((.+?)\)\s-\sRp\s([\d.,]+)$/);
+                        if (match) {
+                            const quantity = parseInt(match[1], 10);
+                            const productName = match[2].trim();
+                            const productSize = match[3].trim();
+                            const subtotalText = match[4].replace(/\./g, '');
+                            const subtotal = parseInt(subtotalText, 10);
+                            
+                            // Find the base price for the item
+                            let price = subtotal / quantity;
+
+                            orderData.items.push({
+                                name: productName,
+                                size: productSize,
+                                quantity,
+                                price,
+                                subtotal
+                            });
+                        }
+                    }
+                });
+
+                let calculatedTotal = 0;
+                orderData.items.forEach(item => {
+                    calculatedTotal += item.subtotal;
+                });
+                orderData.total = calculatedTotal;
+
+                if (orderData.items.length === 0) {
+                     showModal('<p class="text-red-500">Tidak dapat menemukan detail pesanan dalam teks. Mohon pastikan formatnya benar.</p>');
+                     return;
+                }
+
+                await addDoc(collection(db, `/artifacts/${appId}/public/data/orders`), orderData);
+                showModal('<p class="text-green-500">Pesanan berhasil ditambahkan!</p>');
+                adminQuickInput.value = '';
+            } catch (error) {
+                console.error("Error processing admin input: ", error);
+                showModal('<p class="text-red-500">Terjadi kesalahan saat memproses pesanan. Mohon coba lagi.</p>');
+            }
+        });
+
+
         // Initial render
         renderProducts();
         calculateTotal();
+        populateFilters();
     </script>
 </body>
 </html>
