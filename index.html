@@ -9,29 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Mengatur font dan background untuk seluruh halaman */
         body {
             font-family: 'Outfit', sans-serif;
             background-color: #fce7b1;
             background-image: linear-gradient(to bottom, #fde9c5, #fef4e5);
             padding-bottom: 9rem;
         }
-        /* Style for the "Input Admin" ribbon */
-        .admin-ribbon {
-            position: absolute;
-            top: 0.5rem; /* Adjusted position */
-            left: 0.5rem; /* Adjusted position */
-            background-color: #3b82f6; /* Blue-500 */
-            color: white;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.65rem; /* Smaller font size */
-            font-weight: 600;
-            border-radius: 0.5rem;
-            z-index: 10;
-        }
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
 
+    <!-- Container utama untuk seluruh aplikasi -->
     <div id="app" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-4xl mx-auto my-8">
         
         <!-- Tombol Admin Login di bagian paling atas -->
@@ -46,6 +35,7 @@
             <img src="https://github.com/trinugrohomr3/for-order-kripew/blob/main/poster.png?raw=true" alt="Gambar Produk KRIPEW" class="w-full h-auto object-cover">
         </div>
 
+        <!-- Modal untuk konfirmasi pesanan atau pesan error -->
         <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
             <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
                 <div class="mt-3 text-center">
@@ -58,7 +48,7 @@
             </div>
         </div>
 
-        <!-- Main Order Form View -->
+        <!-- Tampilan utama form pemesanan -->
         <div id="main-view">
             <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
             <div class="text-center text-sm mb-6 text-gray-500">
@@ -75,21 +65,21 @@
                 <p>Terima kasih🤗 🫶🏻✨</p>
             </div>
             <form id="order-form" class="space-y-6">
+                <!-- Form input untuk data diri pelanggan -->
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
                 </div>
-
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
                     <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
                 </div>
-
                 <div>
                     <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
                     <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
                 </div>
 
+                <!-- Opsi pengiriman -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Opsi Pengiriman</label>
                     <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
@@ -126,9 +116,9 @@
                     </div>
                 </div>
 
+                <!-- Pilihan produk -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
-                    <!-- Product grid container -->
                     <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
                     </div>
@@ -136,7 +126,7 @@
             </form>
         </div>
 
-        <!-- Admin Login View -->
+        <!-- Tampilan login admin -->
         <div id="admin-login-view" class="hidden">
             <h2 class="text-2xl font-bold text-center text-orange-600 mb-6">Login Admin</h2>
             <div class="space-y-4">
@@ -151,7 +141,7 @@
             </div>
         </div>
         
-        <!-- Admin Dashboard Section -->
+        <!-- Tampilan dashboard admin -->
         <div id="admin-dashboard" class="hidden">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-orange-600">Dashboard Admin</h2>
@@ -162,25 +152,18 @@
             <div class="space-y-4 mb-8">
                 <h3 class="text-lg font-bold text-gray-800">Ringkasan Pesanan (Total Semua)</h3>
                 <div id="summary-dashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Total Pendapatan -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pendapatan</p>
                         <p id="total-revenue" class="text-xl font-bold text-orange-600 mt-1">Rp 0</p>
                     </div>
-
-                    <!-- Total Pesanan -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pesanan</p>
                         <p id="total-orders" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
-
-                    <!-- Total Produk Terjual -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Produk Terjual</p>
                         <p id="total-products-sold" class="text-xl font-bold text-orange-600 mt-1">0</p>
                     </div>
-                    
-                    <!-- Total Pembeli -->
                     <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                         <p class="text-sm text-gray-500">Total Pembeli (Unik)</p>
                         <p id="total-buyers" class="text-xl font-bold text-orange-600 mt-1">0</p>
@@ -224,7 +207,7 @@
                 </div>
             </div>
 
-            <!-- Admin Quick Input Section -->
+            <!-- Bagian untuk input cepat admin dari teks WhatsApp -->
             <div class="bg-gray-50 p-4 rounded-xl shadow-md border border-gray-200">
                 <h3 class="text-lg font-bold text-gray-800 mb-2">Input Cepat Admin</h3>
                 <p class="text-sm text-gray-500 mb-4">Tempelkan template pesanan dari WhatsApp di sini. Data akan diubah otomatis.</p>
@@ -236,7 +219,7 @@
         </div>
     </div>
     
-    <!-- Sticky footer with total price and order button -->
+    <!-- Footer dengan total harga dan tombol pesan -->
     <div id="sticky-footer" class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
         <div class="flex items-center justify-between">
             <p class="text-lg font-semibold text-orange-600">Total Harga: <span id="total-price" class="font-bold">Rp 0</span></p>
@@ -247,35 +230,39 @@
     </div>
 
     <script type="module">
+        // Import modul Firebase yang diperlukan
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Setup
+        // Variabel global yang disediakan oleh lingkungan Canvas
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 
+        // Inisialisasi Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
         let userId = '';
+        // Autentikasi pengguna secara anonim atau dengan token kustom
         if (typeof __initial_auth_token !== 'undefined') {
             signInWithCustomToken(auth, __initial_auth_token);
         } else {
             signInAnonymously(auth);
         }
+
+        // Dapatkan user ID setelah autentikasi berhasil
         auth.onAuthStateChanged(user => {
             if (user) {
                 userId = user.uid;
-                // Once authenticated, start listening to orders
                 setupRealtimeListener();
             } else {
                 console.log("Authentication failed. User ID is not available.");
             }
         });
 
-        // Array of available flavors with their respective images
+        // Data produk
         const flavors = [
             { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
             { name: 'Seaweed', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Seaweed' },
@@ -284,17 +271,16 @@
             { name: 'Balado Daun Jeruk', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Balado+Daun+Jeruk' }
         ];
 
-        // Array of available sizes with their prices
         const sizes = [
             { size: '80gr (Small)', price: 25000 },
             { size: '120gr (Large)', price: 35000 }
         ];
 
-        // Array of delivery options for the filter dropdown
+        // Opsi pengiriman untuk filter dashboard
         const deliveryOptions = ['Instant', 'Sameday', 'Regular', 'Next Day', 'COD', 'Self Pickup', 'Other'];
-
         const whatsappNumber = '6285855550120';
         
+        // Elemen DOM yang dibutuhkan
         const productList = document.getElementById('product-list');
         const totalPriceEl = document.getElementById('total-price');
         const form = document.getElementById('order-form');
@@ -305,11 +291,9 @@
         const phoneInput = document.getElementById('phone');
         const addressInput = document.getElementById('address');
         const otherDeliveryInput = document.getElementById('delivery-other-input');
-
         const mainView = document.getElementById('main-view');
         const adminLoginView = document.getElementById('admin-login-view');
         const adminDashboard = document.getElementById('admin-dashboard');
-        
         const toggleViewBtn = document.getElementById('toggle-view-btn');
         const loginBtn = document.getElementById('login-btn');
         const closeDashboardBtn = document.getElementById('close-dashboard-btn');
@@ -319,8 +303,6 @@
         const posterContainer = document.getElementById('poster-container');
         const stickyFooter = document.getElementById('sticky-footer');
         const adminLoginLinkContainer = document.getElementById('admin-login-link-container');
-
-        // Dashboard elements
         const totalRevenueEl = document.getElementById('total-revenue');
         const totalOrdersEl = document.getElementById('total-orders');
         const totalProductsSoldEl = document.getElementById('total-products-sold');
@@ -330,17 +312,15 @@
         const searchInput = document.getElementById('search-input');
         const flavorFilter = document.getElementById('flavor-filter');
         const sizeFilter = document.getElementById('size-filter');
-        const deliveryFilter = document.getElementById('delivery-filter'); // New delivery filter
+        const deliveryFilter = document.getElementById('delivery-filter');
         const resetFilterBtn = document.getElementById('reset-filter-btn');
-
-        // New admin quick input elements
         const adminQuickInput = document.getElementById('admin-quick-input');
         const processAdminInputBtn = document.getElementById('process-admin-input-btn');
         
-        // Global variable to store all orders fetched from Firestore
+        // Global variable untuk menyimpan data pesanan dari Firestore
         let allOrders = [];
 
-        // Render products based on flavors
+        // Fungsi untuk me-render produk di halaman utama
         function renderProducts() {
             productList.innerHTML = '';
             flavors.forEach((flavor, flavorIndex) => {
@@ -376,7 +356,7 @@
             });
         }
 
-        // Calculate total price
+        // Fungsi untuk menghitung total harga
         function calculateTotal() {
             let total = 0;
             flavors.forEach((flavor, flavorIndex) => {
@@ -392,22 +372,21 @@
             totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        // Show confirmation modal
+        // Fungsi untuk menampilkan modal
         function showModal(message) {
             confirmationMessage.innerHTML = message;
             modal.classList.remove('hidden');
         }
 
-        // Hide modal
+        // Fungsi untuk menyembunyikan modal
         function hideModal() {
             modal.classList.add('hidden');
         }
 
-        // Event listeners for product quantity
+        // Event listener untuk tombol kuantitas produk
         productList.addEventListener('click', (e) => {
             const target = e.target;
             let qtyInput;
-
             if (target.classList.contains('increment-btn')) {
                 qtyInput = document.getElementById(target.dataset.target);
                 qtyInput.value = parseInt(qtyInput.value) + 1;
@@ -422,7 +401,7 @@
             }
         });
 
-        // Form submission handler
+        // Event listener untuk pengiriman form
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -458,10 +437,7 @@
                         hasOrder = true;
                         const subtotal = qty * size.price;
                         total += subtotal;
-                        
-                        // Extract just the gramasi from the size string
                         const gramasi = size.size.split(' ')[0];
-
                         orderedItems.push({
                             name: flavor.name,
                             size: size.size,
@@ -486,11 +462,11 @@
                 items: orderedItems,
                 total: total,
                 timestamp: serverTimestamp(),
-                userId: userId, // Store the user ID for tracking
-                status: 'Menunggu' // Default status
+                userId: userId,
+                status: 'Menunggu'
             };
 
-            // Save order to Firestore
+            // Simpan pesanan ke Firestore
             try {
                 await addDoc(collection(db, `/artifacts/${appId}/public/data/orders`), orderData);
                 console.log("Order saved to Firestore successfully.");
@@ -498,6 +474,7 @@
                 console.error("Error saving order to Firestore: ", error);
             }
 
+            // Buat ringkasan pesanan untuk modal konfirmasi
             let orderSummaryHtml = `
                 <p><strong>Nama:</strong> ${name}</p>
                 <p><strong>No. Telp:</strong> ${phone}</p>
@@ -511,12 +488,10 @@
                 orderSummaryHtml += `<li>${item.quantity}x ${item.name} (${gramasi}) - Rp ${item.subtotal.toLocaleString('id-ID')}</li>`;
             });
             orderSummaryHtml += `</ul>`;
-
-            orderSummaryHtml += `
-                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
-                <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
-            `;
+            orderSummaryHtml += `<p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>`;
+            orderSummaryHtml += `<p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>`;
             
+            // Buat pesan WhatsApp
             let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
             whatsappMessage += `Nama: ${name}\n`;
             whatsappMessage += `No. Telp: ${phone}\n`;
@@ -531,7 +506,6 @@
             whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
             whatsappMessage += `Terima kasih!✨`;
 
-
             showModal(`
                 <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
                 <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
@@ -544,10 +518,10 @@
 
         closeModalBtn.addEventListener('click', hideModal);
 
-        // --- View Toggling Logic ---
+        // --- Logika Pergantian Tampilan ---
         const adminPassword = 'admin123';
 
-        // Main button to go to login view
+        // Alihkan ke tampilan login admin
         toggleViewBtn.addEventListener('click', () => {
             mainView.classList.add('hidden');
             posterContainer.classList.add('hidden');
@@ -557,28 +531,28 @@
             loginErrorMessage.classList.add('hidden');
         });
 
-        // Login button handler
+        // Tangani login admin
         loginBtn.addEventListener('click', () => {
             if (adminPasswordInput.value === adminPassword) {
                 adminLoginView.classList.add('hidden');
                 adminDashboard.classList.remove('hidden');
                 loginErrorMessage.classList.add('hidden');
-                adminLoginLinkContainer.classList.add('hidden'); // Hide the Admin Login link
+                adminLoginLinkContainer.classList.add('hidden');
             } else {
                 loginErrorMessage.classList.remove('hidden');
             }
         });
 
-        // Button on dashboard to go back to main form
+        // Tutup dashboard admin
         closeDashboardBtn.addEventListener('click', () => {
             adminDashboard.classList.add('hidden');
             mainView.classList.remove('hidden');
             posterContainer.classList.remove('hidden');
             stickyFooter.classList.remove('hidden');
-            adminLoginLinkContainer.classList.remove('hidden'); // Show the Admin Login link again
+            adminLoginLinkContainer.classList.remove('hidden');
         });
 
-        // Populate filters
+        // Isi dropdown filter
         function populateFilters() {
             flavors.forEach(flavor => {
                 const option = document.createElement('option');
@@ -592,7 +566,6 @@
                 option.textContent = size.size;
                 sizeFilter.appendChild(option);
             });
-            // New: Populate delivery options for the filter
             deliveryOptions.forEach(optionText => {
                 const option = document.createElement('option');
                 option.value = optionText;
@@ -601,7 +574,7 @@
             });
         }
         
-        // Render filtered/searched orders and update summary
+        // Render pesanan di dashboard admin
         function renderDashboard(ordersToRender) {
             let totalRevenue = 0;
             let totalProductsSold = 0;
@@ -611,8 +584,7 @@
 
             ordersList.innerHTML = '';
 
-            // Calculate total summary from ALL orders
-            totalOrdersEl.textContent = allOrders.length;
+            // Hitung ringkasan dari SEMUA pesanan
             allOrders.forEach((order) => {
                 totalRevenue += order.total;
                 uniqueBuyers.add(order.phone);
@@ -621,7 +593,7 @@
                 });
             });
             
-            // Calculate production summary from PENDING orders
+            // Hitung ringkasan produksi dari pesanan yang BELUM SELESAI
             const pendingOrders = allOrders.filter(order => order.status !== 'Selesai');
             pendingOrders.forEach((order) => {
                  order.items.forEach(item => {
@@ -631,7 +603,7 @@
                 });
             });
 
-            // Rendering individual order cards based on the filtered list
+            // Render setiap pesanan
             ordersToRender.forEach((order) => {
                 const orderDate = order.timestamp ? new Date(order.timestamp.seconds * 1000).toLocaleString('id-ID') : 'N/A';
                 
@@ -658,32 +630,19 @@
 
                 let statusButtonHtml = '';
                 if (order.status === 'Menunggu') {
-                    statusButtonHtml = `
-                        <button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">
-                            Diproses
-                        </button>
-                    `;
+                    statusButtonHtml = `<button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">Diproses</button>`;
                 } else if (order.status === 'Diproses') {
-                     statusButtonHtml = `
-                        <button class="update-status-btn bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-green-600 transition-colors" data-id="${order.id}" data-status="Selesai">
-                            Siap
-                        </button>
-                    `;
+                     statusButtonHtml = `<button class="update-status-btn bg-green-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-green-600 transition-colors" data-id="${order.id}" data-status="Selesai">Siap</button>`;
                 } else if (order.status === 'Selesai') {
-                     statusButtonHtml = `
-                        <button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">
-                            Diproses
-                        </button>
-                    `;
+                     statusButtonHtml = `<button class="update-status-btn bg-blue-500 text-white text-sm font-medium px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors" data-id="${order.id}" data-status="Diproses">Diproses</button>`;
                 }
                 
-                // Moved the ribbon to be a part of the card's inner HTML
+                // Tambahkan label "Input Admin" jika pesanan diinput oleh admin
                 let ribbonHtml = '';
                 if (order.is_admin_input) {
                     ribbonHtml = '<span class="text-xs font-semibold text-gray-400 ml-2">Input Admin</span>';
                 }
                 
-                // Now we use the 'total' field directly from the order data
                 const displayedTotal = order.total.toLocaleString('id-ID');
 
                 orderCard.innerHTML = `
@@ -721,7 +680,7 @@
                 ordersList.appendChild(orderCard);
             });
 
-            // Render aggregated data to summary sections
+            // Perbarui data ringkasan di dashboard
             totalRevenueEl.textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
             totalProductsSoldEl.textContent = totalProductsSold.toLocaleString('id-ID');
             totalBuyersEl.textContent = uniqueBuyers.size;
@@ -740,15 +699,14 @@
             }
         }
         
-        // Apply filters and search
+        // Fungsi untuk menerapkan filter dan pencarian
         function applyFiltersAndSearch() {
             const searchTerm = searchInput.value.toLowerCase().trim();
             const selectedFlavor = flavorFilter.value;
             const selectedSize = sizeFilter.value;
-            const selectedDelivery = deliveryFilter.value; // New filter value
+            const selectedDelivery = deliveryFilter.value;
 
             const filteredOrders = allOrders.filter(order => {
-                // Search logic
                 const matchesSearch = searchTerm === '' ||
                     order.name.toLowerCase().includes(searchTerm) ||
                     order.phone.includes(searchTerm) ||
@@ -758,7 +716,6 @@
                         item.size.toLowerCase().includes(searchTerm)
                     );
                 
-                // Filter logic
                 const matchesFlavor = selectedFlavor === '' ||
                     order.items.some(item => item.name === selectedFlavor);
 
@@ -774,31 +731,30 @@
             renderDashboard(filteredOrders);
         }
 
-        // Real-time listener for orders
+        // Setup listener real-time dari Firestore
         function setupRealtimeListener() {
             onSnapshot(collection(db, `/artifacts/${appId}/public/data/orders`), (snapshot) => {
                 allOrders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                // Re-apply filters and search with the new data
                 applyFiltersAndSearch();
             }, (error) => {
                 console.error("Error getting real-time orders: ", error);
             });
         }
         
-        // Event listeners for filter and search controls
+        // Event listeners untuk filter dan pencarian
         searchInput.addEventListener('input', applyFiltersAndSearch);
         flavorFilter.addEventListener('change', applyFiltersAndSearch);
         sizeFilter.addEventListener('change', applyFiltersAndSearch);
-        deliveryFilter.addEventListener('change', applyFiltersAndSearch); // New event listener
+        deliveryFilter.addEventListener('change', applyFiltersAndSearch);
         resetFilterBtn.addEventListener('click', () => {
             searchInput.value = '';
             flavorFilter.value = '';
             sizeFilter.value = '';
-            deliveryFilter.value = ''; // Reset new filter
+            deliveryFilter.value = '';
             applyFiltersAndSearch();
         });
 
-        // Event listener for dynamic buttons inside the orders list
+        // Event listener untuk tombol hapus dan update status
         ordersList.addEventListener('click', async (e) => {
             if (e.target.classList.contains('update-status-btn')) {
                 const orderId = e.target.dataset.id;
@@ -823,7 +779,7 @@
             }
         });
 
-        // Handler for the new admin quick input button
+        // Event handler untuk input cepat admin
         processAdminInputBtn.addEventListener('click', async () => {
             const text = adminQuickInput.value;
             if (!text.trim()) {
@@ -857,14 +813,11 @@
                         itemsSection = true;
                         return;
                     }
-
                     if (line.trim().toLowerCase().startsWith('total harga:')) {
                         itemsSection = false;
                         return;
                     }
-
                     if (itemsSection && line.trim().length > 0) {
-                        // Regex to capture quantity, product name, size, and subtotal
                         const match = line.match(/^(\d+)x\s(.+?)\s\((.+?)\)\s-\sRp\s([\d.,]+)$/);
                         if (match) {
                             const quantity = parseInt(match[1], 10);
@@ -873,9 +826,7 @@
                             const subtotalText = match[4].replace(/\./g, '');
                             const subtotal = parseInt(subtotalText, 10);
                             
-                            // Find the base price for the item
                             let price = subtotal / quantity;
-
                             orderData.items.push({
                                 name: productName,
                                 size: productSize,
@@ -908,7 +859,7 @@
         });
 
 
-        // Initial render
+        // Panggil fungsi-fungsi awal saat halaman dimuat
         renderProducts();
         calculateTotal();
         populateFilters();
