@@ -18,17 +18,17 @@
     </style>
 </head>
 <body class="p-4 flex items-center justify-center min-h-screen">
-
+    
     <div id="app" class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 w-full max-w-4xl mx-auto my-8">
-        <!-- Gambar produk dari URL GitHub yang Anda berikan -->
         <div class="mb-6 rounded-3xl overflow-hidden shadow-xl">
+            <!-- Gambar poster utama -->
             <img src="https://github.com/trinugrohomr3/for-order-kripew/blob/main/poster.png?raw=true" alt="Gambar Produk KRIPEW" class="w-full h-auto object-cover">
         </div>
 
-        <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
+        <div id="confirmation-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+            <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-xl bg-white">
                 <div class="mt-3 text-center">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Konfirmasi Pesanan</h3>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Konfirmasi Pesanan</h3>
                     <div id="confirmation-message" class="mt-2 px-7 py-3 text-sm text-gray-500 text-left"></div>
                     <div class="items-center px-4 py-3">
                         <button id="close-modal-btn" class="px-4 py-2 bg-gray-200 text-gray-700 text-base font-medium rounded-lg w-full shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300">Tutup</button>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold text-center text-orange-600 mb-2">Form Order KRIPEW</h1>
+        <h1 id="main-title" class="text-3xl font-bold text-center text-orange-600 mb-2 cursor-pointer select-none">Form Order KRIPEW</h1>
         <div class="text-center text-sm mb-6 text-gray-500">
             <p>Hai, terima kasih sudah mau order KRIPEW.</p>
             <p>Berikut panduan untuk pengisian form:</p>
@@ -51,20 +51,21 @@
             <p class="mt-4">Note : Harga yang tertera blm termasuk ongkir 🤗</p>
             <p>Terima kasih🤗 🫶🏻✨</p>
         </div>
+        
         <form id="order-form" class="space-y-6">
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                <input type="text" id="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+                <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
             </div>
 
             <div>
                 <label for="phone" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-                <input type="tel" id="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
+                <input type="tel" id="phone" name="phone" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
             </div>
 
             <div>
                 <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                <textarea id="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
+                <textarea id="address" name="address" rows="3" required class="mt-1 block w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"></textarea>
             </div>
 
             <div>
@@ -72,61 +73,123 @@
                 <p class="text-xs text-gray-500 mb-2">Estimasi ongkir akan di informasikan by whatsapp</p>
                 <div class="mt-2 space-y-2">
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-instant" name="delivery-option" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-instant" name="delivery" value="Instant" required class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-instant" class="text-sm text-gray-700">⚡️ Instant (Gojek/Grab/Lalamove/etc)</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-sameday" name="delivery-option" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-sameday" name="delivery" value="Sameday" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-sameday" class="text-sm text-gray-700">📦 Sameday (Gojek/Grab)</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-regular" name="delivery-option" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-regular" name="delivery" value="Regular" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-regular" class="text-sm text-gray-700">🚚 Regular (JNE Reg)</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-nextday" name="delivery-option" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-nextday" name="delivery" value="Next Day" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-nextday" class="text-sm text-gray-700">✈️ Next Day (JNE Yes)</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-cod" name="delivery-option" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-cod" name="delivery" value="COD" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-cod" class="text-sm text-gray-700">💰 COD</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-pickup" name="delivery-option" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-pickup" name="delivery" value="Self Pickup" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-pickup" class="text-sm text-gray-700">🚶‍♂️ Self Pickup</label>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <input type="radio" id="delivery-other" name="delivery-option" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
+                        <input type="radio" id="delivery-other" name="delivery" value="Other" class="form-radio text-orange-500 focus:ring-orange-500">
                         <label for="delivery-other" class="text-sm text-gray-700">❓ Other:</label>
-                        <input type="text" id="delivery-other-input" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
+                        <input type="text" id="delivery-other-input" name="delivery-other-text" class="flex-1 px-2 py-1 border border-gray-200 rounded-lg text-sm shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500">
                     </div>
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Pilihan Produk</label>
-                <!-- Product grid container -->
+                <label class="block text-sm font-medium text-gray-700 mb-4">Pilihan Produk</label>
+                
+                <!-- Keripik Section -->
+                <div class="mb-2 border-b-2 border-orange-100 pb-2">
+                    <h3 class="text-lg font-bold text-orange-600">🥔 KRIPEW (Keripik)</h3>
+                </div>
                 <div id="product-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Produk akan dibuat secara dinamis oleh JavaScript -->
                 </div>
-            </div>
 
+                <!-- Pudding Section -->
+                <div class="mt-8 mb-2 border-b-2 border-pink-100 pb-2">
+                    <h3 class="text-lg font-bold text-pink-600">🍮 Pannacotta Pudding</h3>
+                </div>
+                <div id="pudding-list" class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Pudding akan dibuat secara dinamis -->
+                </div>
+            </div>
         </form>
     </div>
     
-    <!-- Sticky footer with total price and order button -->
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="hidden fixed inset-0 bg-black/60 z-[70] flex items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+            <h2 class="text-xl font-bold mb-4">Akses Admin</h2>
+            <input type="password" id="admin-password" placeholder="Masukkan Password" class="w-full p-3 border border-gray-200 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <div class="flex gap-2">
+                <button type="button" id="close-admin-login" class="flex-1 py-2 bg-gray-100 rounded-lg font-medium text-gray-700 hover:bg-gray-200 transition">Batal</button>
+                <button type="button" id="submit-admin-login" class="flex-1 py-2 bg-orange-500 text-white rounded-lg font-bold hover:bg-orange-600 transition">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="admin-panel-modal" class="hidden fixed inset-0 bg-white z-[80] overflow-y-auto">
+        <div class="max-w-4xl mx-auto p-6">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-2xl font-bold text-orange-600">Manajemen Menu KRIPEW</h2>
+                <button type="button" id="close-admin-panel" class="text-gray-500 font-bold hover:text-orange-600">Tutup [X]</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Kelola Rasa -->
+                <section class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold mb-4 flex items-center text-gray-700">🥔 Daftar Rasa</h3>
+                    <div id="admin-flavor-list" class="space-y-3 mb-6 max-h-80 overflow-y-auto pr-2"></div>
+                    <div class="space-y-2 pt-4 border-t border-gray-200">
+                        <input type="text" id="new-flavor-name" placeholder="Nama Rasa Baru" class="w-full p-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <input type="text" id="new-flavor-image" placeholder="URL Gambar (Opsional)" class="w-full p-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <button type="button" id="add-flavor-btn" class="w-full bg-orange-500 text-white py-2 rounded-lg font-bold text-sm hover:bg-orange-600 transition">Tambah Rasa</button>
+                    </div>
+                </section>
+
+                <!-- Kelola Varian -->
+                <section class="bg-gray-50 p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="font-bold mb-4 flex items-center text-gray-700">⚖️ Varian & Harga</h3>
+                    <div id="admin-variant-list" class="space-y-3 mb-6 max-h-80 overflow-y-auto pr-2"></div>
+                    <div class="space-y-2 pt-4 border-t border-gray-200">
+                        <div class="flex gap-2">
+                            <input type="text" id="new-variant-name" placeholder="Size (e.g. 80gr)" class="flex-1 p-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <input type="number" id="new-variant-price" placeholder="Harga" class="flex-1 p-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        </div>
+                        <button type="button" id="add-variant-btn" class="w-full bg-green-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-green-700 transition">Tambah Varian</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
     <div class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 z-50 rounded-t-3xl">
         <div class="flex items-center justify-between">
             <p class="text-lg font-semibold text-orange-600">Total Harga: <span id="total-price" class="font-bold">Rp 0</span></p>
-            <button type="submit" form="order-form" class="flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
-                Pesan
+            <button id="submit-btn" class="flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out">
+                <span id="submit-text">Pesan</span>
+                <svg id="loading-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
             </button>
         </div>
     </div>
 
     <script>
-        // Array of available flavors with their respective images
-        const flavors = [
+        // Data Base Lokal (Tanpa Database Server)
+        let flavors = [
             { name: 'Salted Egg', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Salted+Egg' },
             { name: 'Seaweed', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Seaweed' },
             { name: 'Sambal Matah', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Sambal+Matah' },
@@ -134,39 +197,31 @@
             { name: 'Balado Daun Jeruk', imageUrl: 'https://placehold.co/400x200/f97316/ffffff?text=Balado+Daun+Jeruk' }
         ];
 
-        // Array of available sizes with their prices
-        const sizes = [
+        let sizes = [
             { size: '80gr (Small)', price: 25000 },
             { size: '120gr (Large)', price: 35000 }
         ];
 
+        // Data Pudding
+        let puddings = [
+            { name: 'Pannacotta Pudding', imageUrl: 'https://placehold.co/400x200/ec4899/ffffff?text=Pannacotta+Pudding' }
+        ];
+
+        let puddingSizes = [
+            { size: 'Small', price: 10000 },
+            { size: 'Large', price: 20000 }
+        ];
+
         const whatsappNumber = '6285855550120';
-
-        // GANTI URL INI DENGAN URL GOOGLE FORM ANDA
-        const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSe-P_QjU-JpL-g-QY_c8K6M_2XoEw_8n8bV-t1U/formResponse';
         
-        // GANTI ID DI BAWAH INI DENGAN ID PERTANYAAN DARI GOOGLE FORM ANDA
-        const formEntries = {
-            name: 'entry.123456789', // ID untuk Nama Lengkap
-            phone: 'entry.987654321', // ID untuk Nomor Telepon
-            address: 'entry.112233445', // ID untuk Alamat Lengkap
-            // Tambahkan ID untuk setiap varian produk di sini
-            saltedEgg75: 'entry.678901234',
-            saltedEgg115: 'entry.543210987',
-            seaweed75: 'entry.987654321',
-            seaweed115: 'entry.123456789',
-            sambalMatah75: 'entry.112233445',
-            sambalMatah115: 'entry.987654321',
-            cheese75: 'entry.123456789',
-            cheese115: 'entry.987654321',
-            baladoDaunJeruk75: 'entry.112233445',
-            baladoDaunJeruk115: 'entry.987654321',
-        };
-
         const productList = document.getElementById('product-list');
+        const puddingList = document.getElementById('pudding-list');
         const totalPriceEl = document.getElementById('total-price');
-        const form = document.getElementById('order-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const submitText = document.getElementById('submit-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
         const modal = document.getElementById('confirmation-modal');
+        const modalTitle = document.getElementById('modal-title');
         const confirmationMessage = document.getElementById('confirmation-message');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const nameInput = document.getElementById('name');
@@ -174,8 +229,14 @@
         const addressInput = document.getElementById('address');
         const otherDeliveryInput = document.getElementById('delivery-other-input');
 
-        // Render products based on flavors
+        // Render produk ke form
         function renderProducts() {
+            // Simpan jumlah pesanan sebelumnya agar tidak reset saat dirender ulang
+            const qtys = {};
+            document.querySelectorAll('.qty-input').forEach(input => {
+                qtys[input.id] = input.value;
+            });
+
             productList.innerHTML = '';
             flavors.forEach((flavor, flavorIndex) => {
                 const flavorDiv = document.createElement('div');
@@ -183,8 +244,8 @@
                 
                 let sizeOptionsHtml = '';
                 sizes.forEach(size => {
-                    // Correctly handle spaces for unique IDs
                     const uniqueId = `qty-${flavorIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const currentQty = qtys[uniqueId] || '0';
                     sizeOptionsHtml += `
                         <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
                             <div>
@@ -193,7 +254,7 @@
                             </div>
                             <div class="flex items-center space-x-2">
                                 <button type="button" class="bg-gray-200 text-gray-700 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold decrement-btn" data-target="${uniqueId}">-</button>
-                                <input type="number" id="${uniqueId}" name="${uniqueId}" min="0" value="0" readonly class="w-8 px-0 py-1 text-center border-0 bg-transparent text-sm qty-input">
+                                <input type="number" id="${uniqueId}" name="${uniqueId}" min="0" value="${currentQty}" readonly class="w-8 px-0 py-1 text-center border-0 bg-transparent text-sm qty-input">
                                 <button type="button" class="bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold increment-btn" data-target="${uniqueId}">+</button>
                             </div>
                         </div>
@@ -202,7 +263,7 @@
 
                 flavorDiv.innerHTML = `
                     <div class="flex justify-center mb-4">
-                        <img src="${flavor.imageUrl}" alt="Gambar KRIPEW ${flavor.name}" class="w-full h-48 object-cover rounded-lg shadow-lg">
+                        <img src="${flavor.imageUrl}" alt="Gambar KRIPEW ${flavor.name}" class="w-full h-48 object-cover rounded-lg shadow-lg" onerror="this.src='https://placehold.co/400x200/f97316/ffffff?text=${encodeURIComponent(flavor.name)}'">
                     </div>
                     <h3 class="text-lg font-bold text-center text-orange-600 mb-2">${flavor.name}</h3>
                     <div>${sizeOptionsHtml}</div>
@@ -211,7 +272,49 @@
             });
         }
 
-        // Calculate total price
+        // Render pudding ke form
+        function renderPuddings() {
+            const qtys = {};
+            document.querySelectorAll('.pudding-qty-input').forEach(input => {
+                qtys[input.id] = input.value;
+            });
+
+            puddingList.innerHTML = '';
+            puddings.forEach((pudding, index) => {
+                const div = document.createElement('div');
+                div.className = 'bg-pink-50 p-4 rounded-xl shadow-md border border-pink-100 transition-transform duration-300 hover:scale-105';
+                
+                let sizeOptionsHtml = '';
+                puddingSizes.forEach(size => {
+                    const uniqueId = `pudding-qty-${index}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const currentQty = qtys[uniqueId] || '0';
+                    sizeOptionsHtml += `
+                        <div class="flex justify-between items-center py-2 border-b border-pink-100 last:border-0">
+                            <div>
+                                <h4 class="text-xs font-semibold text-pink-500">${size.size}</h4>
+                                <h4 class="text-xs text-gray-500">Rp ${size.price.toLocaleString('id-ID')}</h4>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button type="button" class="bg-pink-200 text-pink-700 w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold decrement-btn" data-target="${uniqueId}">-</button>
+                                <input type="number" id="${uniqueId}" name="${uniqueId}" min="0" value="${currentQty}" readonly class="w-8 px-0 py-1 text-center border-0 bg-transparent text-sm pudding-qty-input">
+                                <button type="button" class="bg-pink-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold increment-btn" data-target="${uniqueId}">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                div.innerHTML = `
+                    <div class="flex justify-center mb-4">
+                        <img src="${pudding.imageUrl}" alt="${pudding.name}" class="w-full h-48 object-cover rounded-lg shadow-lg border border-pink-200" onerror="this.src='https://placehold.co/400x200/ec4899/ffffff?text=${encodeURIComponent(pudding.name)}'">
+                    </div>
+                    <h3 class="text-lg font-bold text-center text-pink-600 mb-2">${pudding.name}</h3>
+                    <div>${sizeOptionsHtml}</div>
+                `;
+                puddingList.appendChild(div);
+            });
+        }
+
+        // Kalkulasi Total Harga
         function calculateTotal() {
             let total = 0;
             flavors.forEach((flavor, flavorIndex) => {
@@ -224,22 +327,52 @@
                     }
                 });
             });
+
+            puddings.forEach((pudding, puddingIndex) => {
+                puddingSizes.forEach(size => {
+                    const uniqueId = `pudding-qty-${puddingIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
+                    if (qtyInput) {
+                        const qty = parseInt(qtyInput.value) || 0;
+                        total += qty * size.price;
+                    }
+                });
+            });
+
             totalPriceEl.textContent = `Rp ${total.toLocaleString('id-ID')}`;
         }
 
-        // Show confirmation modal
-        function showModal(message) {
+        function showModal(title, message) {
+            modalTitle.textContent = title;
             confirmationMessage.innerHTML = message;
             modal.classList.remove('hidden');
         }
 
-        // Hide modal
         function hideModal() {
             modal.classList.add('hidden');
         }
+        
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                submitText.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                submitBtn.classList.add('bg-orange-400', 'cursor-not-allowed');
+                submitBtn.classList.remove('bg-orange-500', 'hover:bg-orange-600');
+            } else {
+                submitText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('bg-orange-400', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-orange-500', 'hover:bg-orange-600');
+            }
+        }
 
-        // Event listeners
-        productList.addEventListener('click', (e) => {
+        // Event listener untuk tombol plus & minus
+        productList.addEventListener('click', handleQuantityChange);
+        puddingList.addEventListener('click', handleQuantityChange);
+
+        function handleQuantityChange(e) {
             const target = e.target;
             let qtyInput;
 
@@ -255,47 +388,38 @@
                     calculateTotal();
                 }
             }
-        });
+        }
 
-        form.addEventListener('submit', async (e) => {
+        // Event Submit Pesanan (Tanpa simpan database)
+        submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            const name = nameInput.value;
-            const phone = phoneInput.value;
-            const address = addressInput.value;
-            const deliveryOption = document.querySelector('input[name="delivery-option"]:checked')?.value;
-            const otherDeliveryText = otherDeliveryInput.value;
-            
-            let finalDeliveryOption = '';
-            if (deliveryOption === 'Other') {
-                finalDeliveryOption = otherDeliveryText;
-            } else if (deliveryOption) {
-                finalDeliveryOption = deliveryOption;
+
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+            const address = addressInput.value.trim();
+            const deliveryOption = document.querySelector('input[name="delivery"]:checked')?.value;
+            const otherDeliveryText = otherDeliveryInput.value.trim();
+
+            if (!name || !phone || !address) {
+                showModal('Peringatan!', '<p class="text-red-500">Mohon lengkapi semua data diri Anda (Nama, Nomor Telepon, dan Alamat).</p>');
+                return;
             }
 
-            if (!name || !phone || !address || !finalDeliveryOption) {
-                showModal('<p class="text-red-500">Mohon lengkapi semua data diri dan opsi pengiriman.</p>');
+            if (!deliveryOption) {
+                showModal('Peringatan!', '<p class="text-red-500">Mohon pilih salah satu Opsi Pengiriman.</p>');
+                return;
+            }
+
+            if (deliveryOption === 'Other' && !otherDeliveryText) {
+                showModal('Peringatan!', '<p class="text-red-500">Mohon isi keterangan untuk opsi pengiriman "Other".</p>');
                 return;
             }
             
-            let total = 0;
-            let hasOrder = false;
-            
-            let orderSummaryHtml = `
-                <p><strong>Nama:</strong> ${name}</p>
-                <p><strong>No. Telp:</strong> ${phone}</p>
-                <p><strong>Alamat:</strong> ${address}</p>
-                <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
-                <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
-                <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
-            `;
+            const finalDeliveryOption = deliveryOption === 'Other' ? otherDeliveryText : deliveryOption;
 
-            let whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n`;
-            whatsappMessage += `*Nama:* ${name}\n`;
-            whatsappMessage += `*No. Telp:* ${phone}\n`;
-            whatsappMessage += `*Alamat:* ${address}\n`;
-            whatsappMessage += `*Opsi Pengiriman:* ${finalDeliveryOption}\n\n`;
-            whatsappMessage += `*Detail Pesanan:*\n`;
+            let hasOrder = false;
+            const orderItems = [];
+            let total = 0;
 
             flavors.forEach((flavor, flavorIndex) => {
                 sizes.forEach(size => {
@@ -305,51 +429,222 @@
                     
                     if (qty > 0) {
                         hasOrder = true;
-                        const subtotal = qty * size.price;
-                        total += subtotal;
-                        
-                        // Extract just the gramasi from the size string
-                        const gramasi = size.size.split(' ')[0];
-                        
-                        orderSummaryHtml += `<li>${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}</li>`;
-                        whatsappMessage += `${qty}x ${flavor.name} (${gramasi}) - Rp ${subtotal.toLocaleString('id-ID')}\n`;
+                        total += qty * size.price;
+                        orderItems.push({
+                            productName: flavor.name,
+                            size: size.size,
+                            quantity: qty,
+                            price: size.price
+                        });
                     }
                 });
             });
 
-            orderSummaryHtml += `</ul>`;
+            puddings.forEach((pudding, puddingIndex) => {
+                puddingSizes.forEach(size => {
+                    const uniqueId = `pudding-qty-${puddingIndex}-${size.size.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    const qtyInput = document.getElementById(uniqueId);
+                    const qty = parseInt(qtyInput.value) || 0;
+                    
+                    if (qty > 0) {
+                        hasOrder = true;
+                        total += qty * size.price;
+                        orderItems.push({
+                            productName: pudding.name,
+                            size: size.size,
+                            quantity: qty,
+                            price: size.price
+                        });
+                    }
+                });
+            });
 
             if (!hasOrder) {
-                showModal('<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
+                showModal('Peringatan!', '<p class="text-red-500">Mohon isi kuantitas pesanan Anda.</p>');
                 return;
             }
 
-            orderSummaryHtml += `
-                <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
-                <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
-            `;
+            // Simulasi proses loading singkat
+            setLoadingState(true);
             
-            whatsappMessage += `\n*Total Harga:* Rp ${total.toLocaleString('id-ID')}\n\n`;
-            whatsappMessage += `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n`;
-            whatsappMessage += `Terima kasih!✨`;
+            setTimeout(() => {
+                const orderDetailsText = orderItems.map(item => `${item.quantity}x ${item.productName} (${item.size})`).join('\n');
+                const orderSummaryHtml = `
+                    <p><strong>Nama:</strong> ${name}</p>
+                    <p><strong>No. Telp:</strong> ${phone}</p>
+                    <p><strong>Alamat:</strong> ${address}</p>
+                    <p><strong>Opsi Pengiriman:</strong> ${finalDeliveryOption}</p>
+                    <p class="mt-4 font-semibold text-gray-700">Detail Pesanan:</p>
+                    <ul class="list-disc list-inside space-y-1 mt-2 text-sm text-gray-600">
+                        ${orderItems.map(item => `<li>${item.quantity}x ${item.productName} (${item.size}) - Rp ${item.price.toLocaleString('id-ID')}</li>`).join('')}
+                    </ul>
+                    <p class="mt-4 font-bold text-lg text-orange-600">Total Harga: Rp ${total.toLocaleString('id-ID')}</p>
+                    <p class="text-xs mt-2 italic">Harga yang tertera <strong><em>belum</em></strong> termasuk ongkos kirim</p>
+                `;
 
+                const whatsappMessage = `🥔Form order pemesanan KRIPEW.\n\n` +
+                                        `*Nama:* ${name}\n` +
+                                        `*No. Telp:* ${phone}\n` +
+                                        `*Alamat:* ${address}\n` +
+                                        `*Opsi Pengiriman:* ${finalDeliveryOption}\n\n` +
+                                        `*Detail Pesanan:*\n` +
+                                        orderDetailsText +
+                                        `\n*Total Harga:* Rp ${total.toLocaleString('id-ID')}\n\n` +
+                                        `_Harga yang tertera *belum* termasuk ongkos kirim_\n\n` +
+                                        `Terima kasih!✨`;
+                
+                showModal('Pesanan Berhasil!', `
+                    <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
+                    <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
+                    <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
+                        Kirim Pesanan via WhatsApp
+                    </a>
+                `);
 
-            showModal(`
-                <p class="font-bold text-gray-800">Pesanan Anda sudah siap!</p>
-                <p class="mt-2 text-gray-600">Berikut adalah ringkasan pesanan Anda:</p>
-                <div class="mt-4 p-4 bg-gray-50 rounded-lg">${orderSummaryHtml}</div>
-                <a href="https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}" target="_blank" class="block w-full text-center mt-4 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ease-in-out">
-                    Kirim Pesanan via WhatsApp
-                </a>
-            `);
+                // Reset form setelah sukses
+                document.getElementById('order-form').reset();
+                calculateTotal();
+                setLoadingState(false);
+            }, 600); // 0.6 detik loading pura-pura
         });
 
         closeModalBtn.addEventListener('click', hideModal);
+
+        // --- ADMIN PANEL LOGIC ---
+        const mainTitle = document.getElementById('main-title');
+        const adminLoginModal = document.getElementById('admin-login-modal');
+        const adminPanelModal = document.getElementById('admin-panel-modal');
+        const adminPasswordInput = document.getElementById('admin-password');
+        let titleClickCount = 0;
         
-        // Initial render
+        mainTitle.addEventListener('click', () => {
+            titleClickCount++;
+            if (titleClickCount >= 5) {
+                adminLoginModal.classList.remove('hidden');
+                titleClickCount = 0;
+            }
+        });
+
+        document.getElementById('close-admin-login').addEventListener('click', () => {
+            adminLoginModal.classList.add('hidden');
+            adminPasswordInput.value = '';
+            titleClickCount = 0;
+        });
+
+        document.getElementById('submit-admin-login').addEventListener('click', () => {
+            if (adminPasswordInput.value === '645') {
+                adminLoginModal.classList.add('hidden');
+                adminPanelModal.classList.remove('hidden');
+                adminPasswordInput.value = '';
+                titleClickCount = 0;
+                renderAdminPanel();
+            } else {
+                alert('Password Salah!');
+            }
+        });
+
+        document.getElementById('close-admin-panel').addEventListener('click', () => {
+            adminPanelModal.classList.add('hidden');
+        });
+
+        function renderAdminPanel() {
+            const flavorList = document.getElementById('admin-flavor-list');
+            if (flavorList) {
+                flavorList.innerHTML = flavors.map((f, i) => `
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100 text-sm">
+                        <div class="flex items-center gap-3">
+                            <img src="${f.imageUrl}" class="w-10 h-10 object-cover rounded-md border border-gray-100" onerror="this.src='https://placehold.co/40x40/f97316/ffffff?text=?'">
+                            <span class="font-medium text-gray-700">${f.name}</span>
+                        </div>
+                        <button type="button" class="delete-flavor-btn text-red-500 hover:text-red-700 hover:bg-red-50 font-bold px-3 py-1 rounded-md transition" data-index="${i}">Hapus</button>
+                    </div>
+                `).join('');
+
+                // Pasang fungsi klik dengan aman tepat setelah tombol dibuat
+                const flavorBtns = flavorList.querySelectorAll('.delete-flavor-btn');
+                flavorBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+                        if (confirm('Hapus rasa ini dari menu?')) {
+                            flavors.splice(idx, 1);
+                            renderAdminPanel();
+                            renderProducts();
+                            calculateTotal();
+                        }
+                    });
+                });
+            }
+
+            const variantList = document.getElementById('admin-variant-list');
+            if (variantList) {
+                variantList.innerHTML = sizes.map((v, i) => `
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100 text-sm">
+                        <div>
+                            <span class="font-bold text-gray-700">${v.size}</span>
+                            <span class="text-green-600 ml-2 font-medium">Rp ${v.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <button type="button" class="delete-variant-btn text-red-500 hover:text-red-700 hover:bg-red-50 font-bold px-3 py-1 rounded-md transition" data-index="${i}">Hapus</button>
+                    </div>
+                `).join('');
+
+                // Pasang fungsi klik dengan aman tepat setelah tombol dibuat
+                const variantBtns = variantList.querySelectorAll('.delete-variant-btn');
+                variantBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const idx = parseInt(e.currentTarget.getAttribute('data-index'));
+                        if (confirm('Hapus varian ini? (Akan hilang dari semua rasa)')) {
+                            sizes.splice(idx, 1);
+                            renderAdminPanel();
+                            renderProducts();
+                            calculateTotal();
+                        }
+                    });
+                });
+            }
+        }
+
+        document.getElementById('add-flavor-btn').addEventListener('click', () => {
+            const nameInput = document.getElementById('new-flavor-name');
+            const imgInput = document.getElementById('new-flavor-image');
+            const name = nameInput.value.trim();
+            let img = imgInput.value.trim();
+            
+            if (name) {
+                if (!img) img = `https://placehold.co/400x200/f97316/ffffff?text=${encodeURIComponent(name)}`;
+                flavors.push({ name, imageUrl: img });
+                // Langsung render ulang UI
+                renderAdminPanel();
+                renderProducts();
+                calculateTotal();
+
+                nameInput.value = '';
+                imgInput.value = '';
+            }
+        });
+
+        document.getElementById('add-variant-btn').addEventListener('click', () => {
+            const sizeInput = document.getElementById('new-variant-name');
+            const priceInput = document.getElementById('new-variant-price');
+            const size = sizeInput.value.trim();
+            const price = parseInt(priceInput.value);
+            
+            if (size && !isNaN(price)) {
+                sizes.push({ size, price });
+                // Langsung render ulang UI
+                renderAdminPanel();
+                renderProducts();
+                calculateTotal();
+
+                sizeInput.value = '';
+                priceInput.value = '';
+            }
+        });
+
+        // Inisialisasi Pertama Kali
         renderProducts();
+        renderPuddings();
         calculateTotal();
     </script>
 </body>
 </html>
-
